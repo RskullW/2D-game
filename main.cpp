@@ -1,0 +1,21 @@
+#include "Game.h"
+#include "Timer.h"
+
+int WinMain(int argc, char* argv[])
+{
+std::cout << "HUI";
+
+	Game::GetInstance()->init("Test game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, false);
+
+	while (Game::GetInstance()->running())
+	{
+		Game::GetInstance()->handleEvents();
+		Game::GetInstance()->Update();
+		Game::GetInstance()->renderer();
+		Timer::GetInstance()->Tick();
+	}
+
+	Game::GetInstance()->clean();
+
+	return 0;
+}
