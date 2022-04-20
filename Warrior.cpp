@@ -31,7 +31,7 @@ Warrior::Warrior(Properties* props): Character(props)
 	m_RigidBody->setGravity(3.0f);
 
 	m_Animation = new SpriteAnim();
-	m_Animation->setProps(m_pTextureID, 0, 6, 120); // ID ��������, ����� ������ ��������-1, ���������� ��������, ��������
+	m_Animation->setProps(m_pTextureID, 0, 6, 120);
 }
 
 void Warrior::Draw()

@@ -2,10 +2,12 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include "Map.h"
 #include <iostream>
+#include "Map.h"
 #include "GameObject.h"
 #include "menu.h"
+#include "Button.h"
+#include "mouse.h"
 
 #define MAP_WIDTH 8160//10384
 #define MAP_HEIGHT 1024//640
@@ -39,5 +41,11 @@ private:
 	SDL_Renderer* m_pRenderer;
 	static Game* s_Instance;
 
-	std::vector<GameObject*> m_GameObjects;
+    mouse* cursor;
+    Button* m_buttonStart, *m_buttonCredits, *m_buttonExit;
+
+    std::vector<GameObject*> m_GameObjects;
+
+    SDL_Texture* m_texMouse;
+    SDL_Rect rect, point;
 };

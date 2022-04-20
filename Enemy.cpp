@@ -14,8 +14,7 @@ Enemy::Enemy(Properties* props) : Character(props)
 	m_Collider = new Collider();
 	m_Collider->SetBuff(-30, -10, 70, 30);
 	m_Animation = new SpriteAnim();
-	m_Animation->setProps(m_pTextureID, 0, 10, 250); // ID текстуры, номер строки анимации-1, количество столбцов, скорость
-
+	m_Animation->setProps(m_pTextureID, 0, 10, 250);
 }
 
 void Enemy::Draw()
