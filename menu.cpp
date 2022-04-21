@@ -14,6 +14,7 @@ void menu::init(){
     m_buttonStart = new Button("start", 75, 285, 75, 285);
     m_buttonCredits = new Button("credits", 75, 285, 75, 285);
     m_buttonExit = new Button("exit", 75, 285, 75, 285);
+    credits = new credits_menu("credits_menu",  640, 960, 640, 960);
     // Coordinates buttons
     coordinateButtons(m_buttonStart, 0, SCREEN_WIDTH/2 - m_buttonStart->getDest().w/2, 180);
     coordinateButtons(m_buttonCredits, 0, SCREEN_WIDTH/2 - m_buttonCredits->getDest().w/2, 285);
@@ -23,7 +24,7 @@ void menu::init(){
 
 }
 
-void menu::update(){
+void menu::update(SDL_Renderer* m_pRenderer){
 
     m_buttonStart->update(*cursor);
     m_buttonCredits->update(*cursor);
@@ -40,8 +41,9 @@ void menu::update(){
 
         else if (m_buttonCredits->getSelected() == true)
         {
-            isActivated = false;
-            isStart = true;
+            credits->draw(m_pRenderer);
+            SDL_Delay(5000);
+            isCredits = true;
         }
 
         else if (m_buttonExit->getSelected() == true)
@@ -73,15 +75,9 @@ void menu::draw(SDL_Renderer* m_pRendererMenu){
 }
 
 void menu::clean() {
-    // clean textures button from window game
-    delete m_buttonStart;
-    delete m_buttonCredits;
-    delete m_buttonExit;
-    delete cursor;
-    // removing from the window game
     SDL_ShowCursor(false);
-
     isActivated = false;
+    SDL_DestroyTexture(m_pTexture);
 }
 
 void menu::coordinateButtons(Button* butUser, int srcY, int destX, int destY) {

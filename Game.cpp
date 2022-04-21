@@ -20,7 +20,7 @@ void Game::init(const char* title, int xpos, int ypos, int w, int h, bool fullsc
 		m_bRunning = false;
 		return;
 	}
-	
+    
 	m_pWindow = SDL_CreateWindow(title, xpos, ypos, w, h, flags);
 
 	if (m_pWindow == nullptr)
@@ -88,7 +88,7 @@ void Game::Update()
 	float dt = Timer::GetInstance()->GetDeltaTime();
 
     while (mainmenu->getActive() == true) {
-        mainmenu->update();
+        mainmenu->update(m_pRenderer);
         mainmenu->draw(m_pRenderer);
         Timer::GetInstance()->Tick();
     }
@@ -96,14 +96,14 @@ void Game::Update()
     if (mainmenu->getExit() == true || mainmenu->getCredits() == true || mainmenu->getStart() == true) {
         if (mainmenu->getExit() == true) {
             m_bRunning = false;
-            mainmenu->clean();
+            mainmenu->deleteButton();
         }
 
         else if (mainmenu->getStart() == true)
         {
             userButEscape = false;
             mainmenu->setDefault();
-            mainmenu->clean();
+            mainmenu->deleteButton();
         }
         return;
     }
@@ -124,7 +124,9 @@ void Game::clean()
     }
 	TextureManager::GetInstance()->clean();
 
-	SDL_DestroyWindow(m_pWindow);
+    mainmenu->clean();
+
+    SDL_DestroyWindow(m_pWindow);
 	SDL_DestroyRenderer(m_pRenderer);
 
 	IMG_Quit();
@@ -139,6 +141,7 @@ bool Game::exitMenu()
             mainmenu = new menu("mainmenu", SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH);
         }
         mainmenu->init();
+
         return true;
     }
 

@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Button.h"
 #include "TextureManager.h"
+#include "credits_menu.h"
 
 class menu
 {
@@ -19,12 +20,25 @@ public:
     }
     void init();
 
-    void update();
+    void update(SDL_Renderer* m_pRenderer);
     void draw(SDL_Renderer* m_pRenderer);
     void clean();
 
     void setActive(bool broadfastUser) {isActivated = broadfastUser;}
     void setDefault() {isStart = isCredits = isExit = false;}
+
+    void deleteButton()
+    {
+        // clean textures button from window game
+        delete m_buttonStart;
+        delete m_buttonCredits;
+        delete m_buttonExit;
+        delete cursor;
+        // removing from the window game
+        SDL_ShowCursor(false);
+
+        isActivated = false;
+    }
 
     bool getStart() {return isStart;}
     bool getCredits() {return isCredits;}
@@ -44,6 +58,7 @@ private:
 
     Button* m_buttonStart, *m_buttonCredits, *m_buttonExit;
     mouse* cursor;
+    credits_menu* credits;
 
     SDL_Texture* m_pTexture;
     SDL_Rect srcMainMenu, destMainMenu;
