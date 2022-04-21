@@ -1,24 +1,51 @@
 #pragma once
+#include <iostream>
+#include "Button.h"
+#include "TextureManager.h"
 
 class menu
 {
 public:
-	static menu* GetInstance() { return s_Instance = (s_Instance != nullptr) ? s_Instance : new menu(); }
-	void PlayGame();
-	void CreditsGame();
-	void StartGame();
+    menu() {Log("menu was created");}
 
-	void update();
+    menu(std::string textureID, int srcH, int srcW, int destH, int destW)
+    {
+        m_pTexture = TextureManager::GetInstance()->getTexture(textureID);
+        srcMainMenu.h = srcH;
+        srcMainMenu.w = srcW;
+        destMainMenu.h = destH;
+        destMainMenu.w = destW;
+        srcMainMenu.x = srcMainMenu.y = destMainMenu.x = destMainMenu.y = 0;
+    }
+    void init();
 
-	bool getStart() { return m_isStart; }
-	bool getCredits() { return m_isCredits; }
-	bool getPlay() { return m_isPlay; }
-	bool getMenu() { return m_isMenu; }
+    void update();
+    void draw(SDL_Renderer* m_pRenderer);
+    void clean();
 
-	void setMenu(bool ok) { m_isMenu = ok;}
+    void setActive(bool broadfastUser) {isActivated = broadfastUser;}
+    void setDefault() {isStart = isCredits = isExit = false;}
+
+    bool getStart() {return isStart;}
+    bool getCredits() {return isCredits;}
+    bool getExit() {return isExit;}
+
+    bool getActive() {return isActivated;}
+
+public:
+    template<class T>
+    void Log(T str) {std::cout << "INFO_MENU: " << str << '\n';}
+
 private:
-	menu() : m_isCredits(0), m_isStart(0), m_isPlay(0), m_isMenu(0) {};
-	bool m_isCredits, m_isPlay, m_isStart, m_isMenu;
+    void coordinateButtons(Button* butUser, int srcY, int destX, int destY);
 
-	static menu* s_Instance;
+    bool isActivated;
+    bool isStart, isCredits = false, isExit = false;
+
+    Button* m_buttonStart, *m_buttonCredits, *m_buttonExit;
+    mouse* cursor;
+
+    SDL_Texture* m_pTexture;
+    SDL_Rect srcMainMenu, destMainMenu;
+
 };

@@ -3,12 +3,6 @@
 #include "TextureManager.h"
 #include "mouse.h"
 
-struct buttonFile
-{
-    SDL_Texture* m_Texture;
-    SDL_Rect src, dest;
-};
-
 class Button
 {
 public:
@@ -17,58 +11,61 @@ public:
     Button(std::string textureID, int srcH, int srcW, int destH, int destW)
     {
 
-        m_Button.m_Texture = TextureManager::GetInstance()->getTexture(textureID);
+        m_Texture = TextureManager::GetInstance()->getTexture(textureID);
 
-        m_Button.src.h = srcH;
-        m_Button.src.w = srcW;
-        m_Button.src.x = 0;
+        src.h = srcH;
+        src.w = srcW;
+        src.x = 0;
 
-        m_Button.dest.h = destH;
-        m_Button.dest.w = destW;
+        dest.h = destH;
+        dest.w = destW;
 
     }
 
     void update(mouse& mse)
     {
-        if (SDL_HasIntersection(&m_Button.dest, &mse.getPoint()))
+        if (SDL_HasIntersection(&dest, &mse.getPoint()))
         {
             m_isSelected = true;
-            m_Button.src.x = m_Button.src.w;
+            src.x = src.w;
         }
 
         else
         {
             m_isSelected = false;
-            m_Button.src.x = 0;
+            src.x = 0;
         }
     }
 
     void draw(SDL_Renderer* m_pRendererButton)
     {
-        SDL_RenderCopy(m_pRendererButton, m_Button.m_Texture, &m_Button.src, &m_Button.dest);
+        SDL_RenderCopy(m_pRendererButton, m_Texture, &src, &dest);
     }
 
     void clean()
     {
-        SDL_DestroyTexture(m_Button.m_Texture);
+        SDL_DestroyTexture(m_Texture);
     }
 
-    SDL_Rect getSource() {return m_Button.src;}
-    SDL_Rect getDest() {return m_Button.dest;}
+    SDL_Rect getSource() {return src;}
+    SDL_Rect getDest() {return dest;}
+    SDL_Texture* getTexture() {return m_Texture;}
 
-    void setSourceX(int axisX) { m_Button.src.x = axisX; }
-    void setSourceY(int axisY) { m_Button.src.y = axisY; }
-    void setSourceW(int axisW) { m_Button.src.w = axisW; }
-    void setSourceH(int axisH) { m_Button.src.h = axisH; }
-    void setSource(SDL_Rect newSource) {m_Button.src = newSource;}
+    void setSourceX(int axisX) { src.x = axisX; }
+    void setSourceY(int axisY) { src.y = axisY; }
+    void setSourceW(int axisW) { src.w = axisW; }
+    void setSourceH(int axisH) { src.h = axisH; }
+    void setSource(SDL_Rect newSource) {src = newSource;}
 
-    void setDestX(int axisX) { m_Button.dest.x = axisX; }
-    void setDestY(int axisY) { m_Button.dest.y = axisY; }
-    void setDestW(int axisW) { m_Button.dest.w = axisW; }
-    void setDestH(int axisH) { m_Button.dest.h = axisH; }
-    void setDest(SDL_Rect newSource) {m_Button.dest = newSource;}
+    void setDestX(int axisX) { dest.x = axisX; }
+    void setDestY(int axisY) { dest.y = axisY; }
+    void setDestW(int axisW) { dest.w = axisW; }
+    void setDestH(int axisH) { dest.h = axisH; }
+    void setDest(SDL_Rect newSource) {dest = newSource;}
 
+    bool getSelected() {return m_isSelected;}
 private:
     bool m_isSelected = false;
-    buttonFile m_Button;
+    SDL_Texture* m_Texture;
+    SDL_Rect src, dest;
 };

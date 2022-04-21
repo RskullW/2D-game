@@ -79,3 +79,9 @@ bool input::GetKey()
 	SDL_PollEvent(&tEvent);
 	return ((tEvent.type == SDL_KEYUP) ? 1 : 0);
 }
+
+bool input::GetMouseButton() {
+    SDL_Event ev;
+    SDL_PollEvent(&ev);
+    return ((ev.type == SDL_MOUSEBUTTONDOWN)?1:0);
+}

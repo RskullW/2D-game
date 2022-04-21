@@ -46,16 +46,6 @@ void Game::init(const char* title, int xpos, int ypos, int w, int h, bool fullsc
 
 	TextureManager::GetInstance()->ParseTextures("../Assets/texture.tml");
 
-    cursor = new mouse("cursor");
-
-    m_buttonStart = new Button("start", 100, 380, 100, 380);
-    m_buttonCredits = new Button("credits", 100, 380, 100, 380);
-    m_buttonExit = new Button("exit", 100, 380, 100, 380);
-
-    m_buttonStart->setSourceY(0);
-    m_buttonStart->setDestX(SCREEN_WIDTH/2 - m_buttonStart->getDest().w/2);
-    m_buttonStart->setDestY(SCREEN_HEIGHT/2 - m_buttonStart->getDest().h/2);
-
 	m_LevelMap = mapParser::GetInstance()->GetMaps("MAP");
 
 	Properties* props = new Properties("player", 50, 460, 112, 113);
@@ -68,7 +58,8 @@ void Game::init(const char* title, int xpos, int ypos, int w, int h, bool fullsc
 
 	Camera::GetInstance()->SetTarget(player->GetOrigin());
 
-
+    mainmenu = new menu("mainmenu", SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH);
+    mainmenu->init();
 	m_bRunning = true;
 }
 
@@ -89,9 +80,6 @@ void Game::renderer()
 		m_GameObjects[i]->Draw();
 	}
 
-    cursor->draw(m_pRenderer);
-    m_buttonStart->draw(m_pRenderer);
-
 	SDL_RenderPresent(m_pRenderer);
 }
 
@@ -99,30 +87,43 @@ void Game::Update()
 {
 	float dt = Timer::GetInstance()->GetDeltaTime();
 
-	m_LevelMap->Update();
-	for (int i = 0; i != m_GameObjects.size(); ++i)
-	{
-		m_GameObjects[i]->Update(dt);
-	}
+    while (mainmenu->getActive() == true) {
+        mainmenu->update();
+        mainmenu->draw(m_pRenderer);
+        Timer::GetInstance()->Tick();
+    }
 
-    m_buttonStart->update(*cursor);
-    cursor->update();
+    if (mainmenu->getExit() == true || mainmenu->getCredits() == true || mainmenu->getStart() == true) {
+        if (mainmenu->getExit() == true) {
+            m_bRunning = false;
+        }
+
+        else if (mainmenu->getStart() == true)
+        {
+            mainmenu->setDefault();
+        }
+        mainmenu->clean();
+        return;
+    }
+
+	m_LevelMap->Update();
+
+	for (int i = 0; i != m_GameObjects.size(); ++i) {
+        m_GameObjects[i]->Update(dt);
+    }
 
     Camera::GetInstance()->Update(dt);
 }
 
 void Game::clean()
 {
-	for (int i = 0; i != m_GameObjects.size(); ++i)
-	{
-		m_GameObjects[i]->Clean();
-	}
+	for (int i = 0; i != m_GameObjects.size(); ++i) {
+        m_GameObjects[i]->Clean();
+    }
 	TextureManager::GetInstance()->clean();
 
-    cursor->clean();
+    delete mainmenu;
 
-    delete cursor;
-    delete m_buttonStart; delete m_buttonExit; delete m_buttonCredits;
 	SDL_DestroyWindow(m_pWindow);
 	SDL_DestroyRenderer(m_pRenderer);
 
