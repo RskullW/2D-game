@@ -7,6 +7,7 @@
 #include "mapParser.h"
 #include "Camera.h"
 #include "ObjectFactory.h"
+#include "soundGame.h"
 
 Game* Game::s_Instance = nullptr;
 
@@ -80,11 +81,12 @@ void Game::renderer()
 		m_GameObjects[i]->Draw();
 	}
 
-	SDL_RenderPresent(m_pRenderer);
+    SDL_RenderPresent(m_pRenderer);
 }
 
 void Game::Update()
 {
+
 	float dt = Timer::GetInstance()->GetDeltaTime();
 
     while (mainmenu->getActive() == true) {

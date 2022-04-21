@@ -27,7 +27,7 @@ include_directories(${SDL2_IMAGE_INCLUDE_DIR})
 link_directories(${SDL2_IMAGE_LIB_DIR})
 link_directories(${SDL2_TTF_LIB_DIR})
 link_directories(${SDL2_LIB_DIR})
-link_directories(${SDL2_MIXER_DIR})
+link_directories(${SDL2_MIXER_LIB_DIR})
 
 
 file(GLOB cpphfiles
@@ -39,7 +39,7 @@ add_executable(escapeFromAfrica ${cpphfiles})
 
 #add_executable(escapeFromAfrica main.cpp Animation.h)
 
-target_link_libraries(${PROJECT_NAME} SDL2main SDL2 SDL2_image SDL2_ttf)
+target_link_libraries(${PROJECT_NAME} SDL2main SDL2 SDL2_image SDL2_ttf SDL2_mixer )
 
 #set(CMAKE_CXX_STANDARD 17)
 #set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${project_SOURCE_DIR}/cmake")
