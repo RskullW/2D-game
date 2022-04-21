@@ -72,14 +72,8 @@ void menu::draw(SDL_Renderer* m_pRendererMenu){
     SDL_RenderPresent(m_pRendererMenu);
 }
 
-void menu::clean(){
+void menu::clean() {
     // clean textures button from window game
-    m_buttonStart->clean();
-    m_buttonCredits->clean();
-    m_buttonExit->clean();
-    // clean texture main_menu
-    SDL_DestroyTexture(m_pTexture);
-    // delete pointers buttons and cursor
     delete m_buttonStart;
     delete m_buttonCredits;
     delete m_buttonExit;

@@ -100,6 +100,7 @@ void Game::Update()
 
         else if (mainmenu->getStart() == true)
         {
+            userButEscape = false;
             mainmenu->setDefault();
         }
         mainmenu->clean();
@@ -122,12 +123,21 @@ void Game::clean()
     }
 	TextureManager::GetInstance()->clean();
 
-    delete mainmenu;
-
 	SDL_DestroyWindow(m_pWindow);
 	SDL_DestroyRenderer(m_pRenderer);
 
-
 	IMG_Quit();
 	SDL_Quit();
+}
+
+bool Game::exitMenu()
+{
+    if (userButEscape){
+        userButEscape = false;
+        mainmenu = new menu("mainmenu", SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH);
+        mainmenu->init();
+        return true;
+    }
+
+    return false;
 }

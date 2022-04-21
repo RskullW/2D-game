@@ -26,7 +26,10 @@ public:
 	void renderer();
 	void clean();
 	void handleEvents();
-	inline void set_mbRunning(bool running) { m_bRunning = running; }
+
+    bool exitMenu();
+
+    inline void set_mbRunning(bool running) { m_bRunning = running; }
 	inline bool running() { return m_bRunning; }
 	inline SDL_Renderer* GetRenderer() { return m_pRenderer; }
 	inline Map* GetMap() { return m_LevelMap; }

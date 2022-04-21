@@ -11,6 +11,11 @@ int WinMain(int argc, char* argv[])
 		Game::GetInstance()->Update();
 		Game::GetInstance()->renderer();
 		Timer::GetInstance()->Tick();
+
+        if (Game::GetInstance()->exitMenu())
+        {
+            std::cout << "test\n";
+        }
 	}
 
 	Game::GetInstance()->clean();

@@ -126,6 +126,10 @@ void Warrior::Update(float dt)
 		m_JumpTime = JUMP_TIME;
 	}
 
+    if (input::GetInstance()->GetKeyDown(SDL_SCANCODE_ESCAPE)){
+        userButEscape = true;
+    }
+
 	// Death
 	//if (m_RigidBody->getVelocity().Y > 0 && !m_Grounded)
 	//{

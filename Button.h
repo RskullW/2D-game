@@ -47,6 +47,11 @@ public:
         SDL_DestroyTexture(m_Texture);
     }
 
+    void nullButton()
+    {
+        m_Texture = nullptr;
+    }
+
     SDL_Rect getSource() {return src;}
     SDL_Rect getDest() {return dest;}
     SDL_Texture* getTexture() {return m_Texture;}

@@ -12,6 +12,8 @@
 //#define RUN_FORCE 1.5f
 #define ATTACK_TIME 20.0f
 
+inline bool userButEscape = false;
+
 class Warrior:
 	public Character
 {
@@ -36,23 +38,13 @@ private:
 
 	void AnimationState();
 
-	bool m_Jumping;
-	bool m_Grounded;
-	bool isFailing;
-	bool m_Attacking;
-	bool m_Running;
-	bool m_ShiftRun;
-	bool m_JumpDown;
+	bool m_Jumping, m_Grounded, isFailing, m_Attacking;
+	bool m_Running, m_JumpDown;
 	
-	enterCheats hackSpeed;
-	enterCheats hackJump;
+	enterCheats hackSpeed, hackJump;
 
 	float m_AccelarationFactorJump;
-	float m_JumpTime;
-	float m_JumpForce;
-	float m_AttackTime;
-	
-	float thisRunning;
+	float m_JumpTime, m_JumpForce, m_AttackTime, thisRunning;
 
 	Collider* m_Collider;
 
