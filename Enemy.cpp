@@ -8,11 +8,13 @@
 static Registrar<Enemy> registrar("FIRSTBOSS");
 
 Enemy::Enemy(Properties* props) : Character(props)
-{ 
-	m_RigidBody = new RigdBody;
-	m_RigidBody->setGravity(3.0f);
+{
 	m_Collider = new Collider();
 	m_Collider->SetBuff(-30, -10, 70, 30);
+
+    m_RigidBody = new RigdBody;
+    m_RigidBody->setGravity(3.0f);
+
 	m_Animation = new SpriteAnim();
 	m_Animation->setProps(m_pTextureID, 0, 10, 250);
 }

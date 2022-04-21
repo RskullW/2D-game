@@ -7,6 +7,7 @@
 #include "Game.h"
 #include "ObjectFactory.h"
 
+static int tempTime = 0;
 static float RUN_FORCE = 0.25f;
 static float JUMP_TIME = 8.0f;
 static float JUMP_FORCE = 6.0f;
@@ -16,7 +17,7 @@ static Registrar<Warrior> registrar("PLAYER");
 
 Warrior::Warrior(Properties* props): Character(props)
 {
-
+    isFailing = 0;
 	hackSpeed.cntButton = hackJump.cntButton = 0;
 	hackSpeed.cheatActivated = hackJump.cheatActivated = 0;
 
@@ -32,6 +33,8 @@ Warrior::Warrior(Properties* props): Character(props)
 
 	m_Animation = new SpriteAnim();
 	m_Animation->setProps(m_pTextureID, 0, 6, 120);
+
+    m_Health = 200, m_Damage = 15;
 }
 
 void Warrior::Draw()
@@ -46,6 +49,35 @@ void Warrior::Draw()
 	SDL_RenderDrawRect(Game::GetInstance()->GetRenderer(), &box);
 }
 
+void Warrior::DrawDeath() {
+
+    if (isFailing == 1) {
+        tempTime++;
+
+        SDL_Rect tempsrc = {0, 0, 960, 640}, tempdest = {0, 0, 960, 640};
+
+        if (tempTime == 100) {
+            while (isFailing) {
+                SDL_RenderClear(Game::GetInstance()->GetRenderer());
+                SDL_SetRenderDrawColor(Game::GetInstance()->GetRenderer(), 0, 0, 0, 0);
+
+                SDL_RenderCopy(Game::GetInstance()->GetRenderer(), TextureManager::GetInstance()->getTexture("death"),
+                               &tempsrc, &tempdest);
+
+                SDL_RenderPresent(Game::GetInstance()->GetRenderer());
+
+                SDL_Event ev;
+                if (SDL_PollEvent(&ev)) {
+                    tempTime = 0;
+                    isFailing = 0;
+                    m_LastSafePos.X = m_pTransform->X = m_Origin->X = 40;
+                    m_LastSafePos.Y = m_pTransform->Y = m_Origin->X = 460;
+                    m_Health = 200;
+                }
+            }
+        }
+    }
+}
 void Warrior::Clean()
 {
 	TextureManager::GetInstance()->Drop(m_pTextureID);
@@ -130,16 +162,20 @@ void Warrior::Update(float dt)
         userButEscape = true;
     }
 
-	// Death
-	//if (m_RigidBody->getVelocity().Y > 0 && !m_Grounded)
-	//{
-	//	isFailing = 1;
-	//}
+	// Death collision map
+    if (CollisionHandler::GetInstance()->MapCollisionDamage(m_Collider->Get()) ) {
+        m_pTransform->X = m_LastSafePos.X;
+        isFailing = 1;
+        DrawDeath();
+    }
 
-	//else
-	//{
-	//	isFailing = 0;
-	//}
+    else if (m_Health<=0){
+        isFailing = 1;
+    }
+
+	else {
+        isFailing = 0;
+    }
 
 	// Attack time
 	
@@ -167,7 +203,13 @@ void Warrior::Update(float dt)
 	{
 		m_pTransform->X = m_LastSafePos.X;
 	}
-	
+
+    if (CollisionHandler::GetInstance()->MapCollisionDamage(m_Collider->Get()))
+    {
+        m_pTransform->X = m_LastSafePos.X;
+        m_Health-=200;
+    }
+
 	// axis Y 
 	m_RigidBody->Update(dt);
 	m_LastSafePos.Y = m_pTransform->Y;

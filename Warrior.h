@@ -5,6 +5,7 @@
 #include "Collider.h"
 #include "Vector2D.h"
 #include "SpriteAnim.h"
+#include "Enemy.h"
 
 //#define JUMP_TIME 10.0f;
 //#define JUMP_FORCE 7.0f
@@ -21,6 +22,7 @@ public:
 	Warrior(Properties* props);
 	
 	virtual void Draw();
+    virtual void DrawDeath();
 	virtual void Clean();
 	virtual void Update(float dt);
 	virtual void CheatSpeed();
@@ -45,6 +47,8 @@ private:
 
 	float m_AccelarationFactorJump;
 	float m_JumpTime, m_JumpForce, m_AttackTime, thisRunning;
+
+    float m_Health, m_Damage;
 
 	Collider* m_Collider;
 
