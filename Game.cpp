@@ -96,14 +96,15 @@ void Game::Update()
     if (mainmenu->getExit() == true || mainmenu->getCredits() == true || mainmenu->getStart() == true) {
         if (mainmenu->getExit() == true) {
             m_bRunning = false;
+            mainmenu->clean();
         }
 
         else if (mainmenu->getStart() == true)
         {
             userButEscape = false;
             mainmenu->setDefault();
+            mainmenu->clean();
         }
-        mainmenu->clean();
         return;
     }
 
@@ -134,7 +135,9 @@ bool Game::exitMenu()
 {
     if (userButEscape){
         userButEscape = false;
-        mainmenu = new menu("mainmenu", SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH);
+        if (mainmenu == nullptr) {
+            mainmenu = new menu("mainmenu", SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH);
+        }
         mainmenu->init();
         return true;
     }

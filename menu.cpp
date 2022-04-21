@@ -11,13 +11,13 @@ void menu::init(){
     // Init cursor
     cursor = new mouse("cursor");
     // Init button
-    m_buttonStart = new Button("start", 100, 380, 100, 380);
-    m_buttonCredits = new Button("credits", 100, 380, 100, 380);
-    m_buttonExit = new Button("exit", 100, 380, 100, 380);
+    m_buttonStart = new Button("start", 75, 285, 75, 285);
+    m_buttonCredits = new Button("credits", 75, 285, 75, 285);
+    m_buttonExit = new Button("exit", 75, 285, 75, 285);
     // Coordinates buttons
-    coordinateButtons(m_buttonStart, 0, SCREEN_WIDTH/2 - m_buttonStart->getDest().w/2, 120);
-    coordinateButtons(m_buttonCredits, 0, SCREEN_WIDTH/2 - m_buttonCredits->getDest().w/2, 300);
-    coordinateButtons(m_buttonExit, 0, SCREEN_WIDTH/2 - m_buttonExit->getDest().w/2, 480);
+    coordinateButtons(m_buttonStart, 0, SCREEN_WIDTH/2 - m_buttonStart->getDest().w/2, 180);
+    coordinateButtons(m_buttonCredits, 0, SCREEN_WIDTH/2 - m_buttonCredits->getDest().w/2, 285);
+    coordinateButtons(m_buttonExit, 0, SCREEN_WIDTH/2 - m_buttonExit->getDest().w/2, 390);
 
     // Source and destination texture main menu
 

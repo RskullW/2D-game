@@ -14,7 +14,7 @@ public:
     {
         m_pTexture = TextureManager::GetInstance()->getTexture(textureID);
         Log(m_pTexture);
-        rect.w = rect.h = 25;
+        rect.w = rect.h = 15;
         point.w = point.h = 1;
 
         SDL_ShowCursor(false);
