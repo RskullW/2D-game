@@ -8,6 +8,7 @@
 #include "ObjectFactory.h"
 
 static int tempTime = 0;
+
 static float RUN_FORCE = 0.25f;
 static float JUMP_TIME = 8.0f;
 static float JUMP_FORCE = 6.0f;
