@@ -71,6 +71,8 @@ int input::GetAxisRey(Axis axis)
 
 	default: return 0;
 	}
+
+    return 0;
 }
 
 bool input::GetKey()

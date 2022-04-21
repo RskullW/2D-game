@@ -2,9 +2,37 @@
 #include "Game.h"
 #include "Camera.h"
 #include "tinyxml.h"
+#include "soundGame.h"
 
 TextureManager* TextureManager::s_Instance = nullptr;
 
+bool TextureManager::ParseSounds(std::string source) {
+    TiXmlDocument xml;
+    xml.LoadFile(source);
+
+    if (xml.Error())
+    {
+        SDL_Log("Error load music");
+        return false;
+    }
+
+    TiXmlElement* root = xml.RootElement();
+
+    for (TiXmlElement* e = root->FirstChildElement(); e!=nullptr; e = e->NextSiblingElement())
+    {
+        if (e->Value() == std::string("effect")) {
+            soundGame::GetInstance()->loadEffect(e->Attribute("id"), e->Attribute("source"));
+            continue;
+        }
+
+        if (e->Value() == std::string("music")) {
+            soundGame::GetInstance()->loadMusic(e->Attribute("id"), e->Attribute("source"));
+            continue;
+        }
+    }
+
+    return true;
+}
 
 void TextureManager::clean()
 {

@@ -22,6 +22,8 @@ public:
 	bool load(std::string id, std::string filename);
 	bool ParseTextures(std::string source);
 
+    bool ParseSounds(std::string source);
+
 private:
 	TextureManager() {};
 	static TextureManager* s_Instance;

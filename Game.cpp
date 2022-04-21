@@ -44,6 +44,8 @@ void Game::init(const char* title, int xpos, int ypos, int w, int h, bool fullsc
 		std::cout << "Failed to load map" << '\n';
 	}
 	TextureManager::GetInstance()->ParseTextures("../Assets/texture.tml");
+    TextureManager::GetInstance()->ParseSounds("../Assets/sounds.tml");
+
     m_LevelMap = mapParser::GetInstance()->GetMaps("MAP");
 
 	Properties* props = new Properties("player", 50, 460, 112, 113);
