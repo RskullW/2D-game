@@ -11,6 +11,8 @@ public:
 	virtual void Clean() = 0;
 	virtual void Update(float dt) = 0;
 
+    virtual float& GetHealth() = 0;
+
 protected:
 	std::string m_Name;
 };

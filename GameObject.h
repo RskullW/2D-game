@@ -40,6 +40,8 @@ public:
 	virtual void Update(float temp) = 0;
 	virtual void Clean() = 0;
 
+    virtual float& GetHealth() = 0;
+
 protected:
 	Pointer* m_Origin;
 	Transform* m_pTransform;

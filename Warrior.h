@@ -27,7 +27,12 @@ public:
 	virtual void Update(float dt);
 	virtual void CheatSpeed();
 	virtual void CheatJump();
+
 	void clearInputCheats(bool*, int);
+
+    Vector2D GetPosPlayer() {return m_LastSafePos;}
+    virtual float& GetHealth() {return m_Health;}
+
 
 private:
 

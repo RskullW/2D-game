@@ -9,7 +9,10 @@
 #include "ObjectFactory.h"
 #include "soundGame.h"
 
+
 Game* Game::s_Instance = nullptr;
+
+static bool aliveVas = 1, aliveStep = 1, alivePal = 1;
 
 void Game::init(const char* title, int xpos, int ypos, int w, int h, bool fullscreen)
 {
@@ -51,13 +54,13 @@ void Game::init(const char* title, int xpos, int ypos, int w, int h, bool fullsc
 
 	Properties* props = new Properties("player", 50, 460, 112, 113);
 
-	GameObject* player = ObjectFactory::GetInstance()->CreateObject("PLAYER", props);
-	Enemy* firstEnemy = new Enemy(new Properties("firstBoss", 50, 100, 78, 78));
+    player = ObjectFactory::GetInstance()->CreateObject("PLAYER", props);
+    firstEnemy = new Enemy(new Properties("firstBoss", 2050, 510, 78, 78, SDL_FLIP_HORIZONTAL));
 
-	m_GameObjects.push_back(firstEnemy); 
-	m_GameObjects.push_back(player);
+	m_GameObjects.push_back(firstEnemy);
+    m_GameObjects.push_back(player);
 
-	Camera::GetInstance()->SetTarget(player->GetOrigin());
+    Camera::GetInstance()->SetTarget(player->GetOrigin());
 
     mainmenu = new menu("mainmenu", SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH);
     mainmenu->init();
@@ -86,15 +89,13 @@ void Game::renderer()
 
 void Game::Update()
 {
-
 	float dt = Timer::GetInstance()->GetDeltaTime();
-
+    // setting menu
     while (mainmenu->getActive() == true) {
         mainmenu->update(m_pRenderer);
         mainmenu->draw(m_pRenderer);
         Timer::GetInstance()->Tick();
     }
-
     if (mainmenu->getExit() == true || mainmenu->getCredits() == true || mainmenu->getStart() == true) {
         if (mainmenu->getExit() == true) {
             m_bRunning = false;
@@ -108,6 +109,14 @@ void Game::Update()
             mainmenu->deleteButton();
         }
         return;
+    }
+
+    if (aliveVas){
+        if (firstEnemy->GetHealth()<=0){
+            aliveVas = 0;
+            m_GameObjects[0]->Clean();
+            m_GameObjects.erase(m_GameObjects.begin());
+        }
     }
 
 	m_LevelMap->Update();

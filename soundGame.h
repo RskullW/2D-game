@@ -22,6 +22,8 @@ public:
     void playEffect(std::string id);
     void loadEffect(std::string id, std::string source);
 
+    void stopEffect(std::string id);
+
     inline static soundGame* GetInstance() {return s_Instance = (s_Instance != nullptr)?s_Instance:new soundGame();}
 
 private:

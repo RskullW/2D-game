@@ -43,6 +43,8 @@ void TextureManager::clean()
 		SDL_DestroyTexture(it->second);
 	}
 
+    soundGame::GetInstance()->clean();
+
 	m_pTexture.clear();
 }
 

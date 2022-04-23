@@ -35,6 +35,11 @@ void soundGame::playEffect(std::string id) {
     }
 }
 
+void soundGame::stopEffect(std::string id)
+{
+        Mix_HaltChannel(-1);
+}
+
 void soundGame::loadEffect(std::string id, std::string source) {
     Mix_Chunk* effect = Mix_LoadWAV(source.c_str());
     if (effect != nullptr)

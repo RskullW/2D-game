@@ -6,6 +6,7 @@
 #include "Map.h"
 #include "GameObject.h"
 #include "menu.h"
+#include "Enemy.h"
 
 #define MAP_WIDTH 8160//10384
 #define MAP_HEIGHT 1024//640
@@ -33,6 +34,9 @@ public:
 	inline bool running() { return m_bRunning; }
 	inline SDL_Renderer* GetRenderer() { return m_pRenderer; }
 	inline Map* GetMap() { return m_LevelMap; }
+    // return boss
+    inline Enemy* getFirstBoss() {return firstEnemy;}
+    inline GameObject* getPlayer() {return player;}
 
 private:
 	Game() {};
@@ -47,4 +51,7 @@ private:
     static Game* s_Instance;
 
     menu* mainmenu;
+
+    Enemy* firstEnemy;
+    GameObject* player;
 };
