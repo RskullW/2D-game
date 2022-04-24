@@ -58,14 +58,14 @@ void Warrior::Draw()
 //	SDL_RenderDrawRect(Game::GetInstance()->GetRenderer(), &box);
 }
 
-void Warrior::DrawDeath() {
+void Warrior::DrawDeath(std::string nameSound) {
 
     if (isFailing == 1) {
         tempTime++;
         SDL_Rect tempsrc = {0, 0, 960, 640}, tempdest = {0, 0, 960, 640};
         if (tempTime == 50) {
 
-            soundGame::GetInstance()->playEffect("sound_die", 2);
+            soundGame::GetInstance()->playEffect(nameSound, 2);
             m_Health = 200;
             m_LastSafePos.X = m_pTransform->X = m_Origin->X = 40;
             m_LastSafePos.Y = m_pTransform->Y = m_Origin->X = 460;
@@ -89,6 +89,8 @@ void Warrior::DrawDeath() {
         }
     }
 }
+
+
 void Warrior::Clean()
 {
 	TextureManager::GetInstance()->Drop(m_pTextureID);
@@ -201,12 +203,14 @@ void Warrior::Update(float dt)
     if (CollisionHandler::GetInstance()->MapCollisionDamage(m_Collider->Get()) ) {
         m_pTransform->X = m_LastSafePos.X;
         isFailing = 1;
-        DrawDeath();
+        DrawDeath("sound_die");
+        soundGame::GetInstance()->playMusic("startMenu");
     }
 
     else if (m_Health<=0){
         isFailing = 1;
-        DrawDeath();
+        DrawDeath("sound_die_enemy");
+        soundGame::GetInstance()->playMusic("startMenu");
     }
 
 	else {

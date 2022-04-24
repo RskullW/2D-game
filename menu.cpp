@@ -1,6 +1,7 @@
 #include "menu.h"
 #include "Game.h"
 #include "input.h"
+#include "soundGame.h"
 
 void menu::init(){
     Log("initialization menu");
@@ -25,7 +26,6 @@ void menu::init(){
 }
 
 void menu::update(SDL_Renderer* m_pRenderer){
-
     m_buttonStart->update(*cursor);
     m_buttonCredits->update(*cursor);
     m_buttonExit->update(*cursor);

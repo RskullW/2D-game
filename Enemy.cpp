@@ -73,6 +73,7 @@ void Enemy::Update(float dt)
         {
             startPhrase = 1;
             soundGame::GetInstance()->playEffect("startPhraseVasukov", 4);
+            soundGame::GetInstance()->playMusic("startMusicVasukov");
         }
     }
 
@@ -92,6 +93,8 @@ void Enemy::Update(float dt)
         {
             startPhrase = 1;
             soundGame::GetInstance()->playEffect("startPhraseVasukov");
+            soundGame::GetInstance()->playMusic("startMusicVasukov");
+
         }
     }
 

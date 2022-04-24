@@ -89,6 +89,7 @@ void Game::Update()
 {
 	float dt = Timer::GetInstance()->GetDeltaTime();
     // setting menu
+
     while (mainmenu->getActive() == true) {
         mainmenu->update(m_pRenderer);
         mainmenu->draw(m_pRenderer);
@@ -113,6 +114,8 @@ void Game::Update()
         if (firstEnemy->GetHealth()<=0){
             aliveVas = 0;
             m_GameObjects.erase(m_GameObjects.begin());
+            soundGame::GetInstance()->playEffect("lastPhraseVasukov");
+            soundGame::GetInstance()->playMusic("startMenu");
         }
     }
 

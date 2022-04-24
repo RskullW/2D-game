@@ -22,7 +22,8 @@ public:
 	Warrior(Properties* props);
 	
 	virtual void Draw();
-    virtual void DrawDeath();
+    virtual void DrawDeath(std::string nameSound);
+
 	virtual void Clean();
 	virtual void Update(float dt);
 	virtual void CheatSpeed();
