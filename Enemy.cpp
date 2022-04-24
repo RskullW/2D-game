@@ -10,6 +10,7 @@
 static Registrar<Enemy> registrar("FIRSTBOSS");
 
 static float RUN_FORCE = 0.25f;
+static float ATTACK_TIME_FIRST = 30.0f;
 
 Enemy::Enemy(Properties* props) : Character(props)
 {
@@ -34,10 +35,27 @@ void Enemy::Draw()
 	m_Animation->Draw(m_pTransform->X, m_pTransform->Y, m_W, m_H, 1, 1, m_sFlip);
 
 	Vector2D cam = Camera::GetInstance()->GetPosition();
-	SDL_Rect box = m_Collider->Get();
-	box.x -= cam.X;
-	box.y -= cam.Y;
-	SDL_RenderDrawRect(Game::GetInstance()->GetRenderer(), &box);
+//	SDL_Rect box = m_Collider->Get();
+//	box.x -= cam.X;
+//	box.y -= cam.Y;
+//	SDL_RenderDrawRect(Game::GetInstance()->GetRenderer(), &box);
+
+    // HP BAR
+    SDL_Rect hpBar;
+    hpBar.x = m_pTransform->X - Camera::GetInstance()->GetPosition().X + 78 / 4;
+    hpBar.y = m_pTransform->Y - Camera::GetInstance()->GetPosition().Y - 20;
+    hpBar.w = 78 / 2;
+    hpBar.h = 15;
+    SDL_SetRenderDrawColor( Game::GetInstance()->GetRenderer(), 0, 0, 0, 125 );
+    SDL_RenderFillRect( Game::GetInstance()->GetRenderer(), &hpBar );
+    // Зеленая полоска хпбара
+    hpBar.x += 5;
+    hpBar.y += 5;
+    hpBar.w -= 10;
+    hpBar.h -= 10;
+    hpBar.w = (double) m_Health / 200 * hpBar.w;
+    SDL_SetRenderDrawColor( Game::GetInstance()->GetRenderer(), 0, 255, 0, 255 );
+    SDL_RenderFillRect( Game::GetInstance()->GetRenderer(), &hpBar );
 }
 
 void Enemy::Update(float dt)
@@ -87,13 +105,10 @@ void Enemy::Update(float dt)
     {
         SDL_Log("ATTACK: PlayerX: %.0f EnemyX: %.0f", Game::GetInstance()->getPlayer()->GetOrigin()->X, m_pTransform->X);
 
-        /*if (m_Attacking == 0)
-        {
-            soundGame::GetInstance()->playEffect("attack");
-        }*/
         m_RigidBody->UnSetForce();
         m_Attacking = 1;
         Game::GetInstance()->getPlayer()->GetHealth()-=m_Damage;
+        soundGame::GetInstance()->playEffect("attackVas", 3);
     }
 
     // Attack time
@@ -105,7 +120,7 @@ void Enemy::Update(float dt)
     else {
         nearPlayer = 0;
         m_Attacking = 0;
-        m_AttackTime = ATTACK_TIME;
+        m_AttackTime = ATTACK_TIME_FIRST;
     }
     
     // axis X

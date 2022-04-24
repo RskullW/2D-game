@@ -45,8 +45,9 @@ private:
 	};
 
 	void AnimationState();
+    void AnimationHPBAR();
 
-	bool m_Jumping, m_Grounded, isFailing, m_Attacking;
+    bool m_Jumping, m_Grounded, isFailing, m_Attacking;
 	bool m_Running, m_JumpDown;
 	
 	enterCheats hackSpeed, hackJump;
@@ -55,10 +56,13 @@ private:
 	float m_JumpTime, m_JumpForce, m_AttackTime, thisRunning;
 
     float m_Health, m_Damage;
+    Properties* hpBar;
 
 	Collider* m_Collider;
 
 	SpriteAnim* m_Animation;
+    SpriteAnim* m_AnimationHP;
+
 	RigdBody* m_RigidBody;
 
 	Vector2D m_LastSafePos;

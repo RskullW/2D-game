@@ -112,11 +112,15 @@ void Game::Update()
     if (aliveVas){
         if (firstEnemy->GetHealth()<=0){
             aliveVas = 0;
-            aliveStep = 0;
-            alivePal = 0;
-            m_GameObjects[0]->Clean();
             m_GameObjects.erase(m_GameObjects.begin());
         }
+    }
+
+    if (player->GetHealth()<=0 && aliveVas==0)
+    {
+        m_GameObjects.push_back(firstEnemy);
+        std::swap(m_GameObjects[0], m_GameObjects[1]);
+        aliveVas = 1;
     }
 
 	m_LevelMap->Update();

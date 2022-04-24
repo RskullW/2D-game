@@ -38,20 +38,24 @@ Warrior::Warrior(Properties* props): Character(props)
 	m_Animation->setProps(m_pTextureID, 0, 6, 120);
 
     m_Health = 200;
-    m_Damage = 50;
+    m_Damage = 40;
+
+    // Location HPbar
+    m_AnimationHP = new SpriteAnim();
+    m_AnimationHP->setProps("hp", 0, 5, 150);
 }
 
 void Warrior::Draw()
 {
 	m_Animation->Draw(m_pTransform->X, m_pTransform->Y, m_W, m_H, 1, 1, m_sFlip);
-	
-	
+    m_AnimationHP->Draw(cam.X, 0, 289, 45);
+
     cam = Camera::GetInstance()->GetPosition();
 
-	SDL_Rect box = m_Collider->Get();
-	box.x -= cam.X;
-	box.y -= cam.Y;
-	SDL_RenderDrawRect(Game::GetInstance()->GetRenderer(), &box);
+//	SDL_Rect box = m_Collider->Get();
+//	box.x -= cam.X;
+//	box.y -= cam.Y;
+//	SDL_RenderDrawRect(Game::GetInstance()->GetRenderer(), &box);
 }
 
 void Warrior::DrawDeath() {
@@ -310,33 +314,78 @@ void Warrior::Update(float dt)
 
 	AnimationState();
 	m_Animation->Update(dt);
+    AnimationHPBAR();
+    m_AnimationHP->Update(dt);
 }
-
 void Warrior::AnimationState()
 {
 
-	m_Animation->setProps("player", 0, 6, 120);
+    m_Animation->setProps("player", 0, 6, 120);
 
-	if (isFailing)
-	{
-		m_Animation->setProps("player", 5, 8, 380);
-	}
+    if (isFailing)
+    {
+        m_Animation->setProps("player", 5, 8, 380);
+    }
 
-	if (m_Attacking)
-	{
-		m_Animation->setProps("player", 1, 6, 120);
-	}
+    if (m_Attacking)
+    {
+        m_Animation->setProps("player", 1, 6, 120);
+    }
 
-	if (m_Running)
-	{
-		m_Animation->setProps("player", 2, 8, 120);
-	}
+    if (m_Running)
+    {
+        m_Animation->setProps("player", 2, 8, 120);
+    }
 
-	if (m_Jumping)
-	{
-		m_Animation->setProps("player", 3, 8, 150);
-	}
+    if (m_Jumping)
+    {
+        m_Animation->setProps("player", 3, 8, 150);
+    }
 
+}
+
+void Warrior::AnimationHPBAR()
+{
+
+    if (m_Health==200)
+    {
+        m_AnimationHP->setProps("hp", 0, 5, 150);
+    }
+
+    else if (m_Health==175)
+    {
+        m_AnimationHP->setProps("hp", 1, 5, 150);
+    }
+
+    else if (m_Health==150)
+    {
+        m_AnimationHP->setProps("hp", 2, 5, 150);
+    }
+
+    else if (m_Health==125)
+    {
+        m_AnimationHP->setProps("hp", 3, 5, 150);
+    }
+
+    else if (m_Health==100)
+    {
+        m_AnimationHP->setProps("hp", 4, 5, 150);
+    }
+
+    else if (m_Health==75)
+    {
+        m_AnimationHP->setProps("hp", 5, 5, 150);
+    }
+
+    else if (m_Health==50)
+    {
+        m_AnimationHP->setProps("hp", 6, 5, 150);
+    }
+
+    else if (m_Health==25)
+    {
+        m_AnimationHP->setProps("hp", 7, 5, 150);
+    }
 }
 
 void Warrior::CheatSpeed()

@@ -28,7 +28,6 @@ private:
     bool startPhrase = 0;
     bool isFailing, m_Attacking, m_Running;
 
-    int timeSound = 0;
     float m_Health, m_Damage, m_AttackTime, thisRunning;
 
     Collider* m_Collider;
