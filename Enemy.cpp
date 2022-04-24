@@ -50,6 +50,12 @@ void Enemy::Update(float dt)
         m_sFlip = SDL_FLIP_HORIZONTAL;
         m_Running = 1;
         nearPlayer = false;
+
+        if (startPhrase == 0)
+        {
+            startPhrase = 1;
+            soundGame::GetInstance()->playEffect("startPhraseVasukov", 4);
+        }
     }
 
     else if (fabs(Game::GetInstance()->getPlayer()->GetOrigin()->X-m_pTransform->X)<=50)
@@ -63,6 +69,12 @@ void Enemy::Update(float dt)
         m_sFlip = SDL_FLIP_NONE;
         m_Running = 1;
         nearPlayer = false;
+
+        if (startPhrase == 0)
+        {
+            startPhrase = 1;
+            soundGame::GetInstance()->playEffect("startPhraseVasukov");
+        }
     }
 
     else if (fabs(Game::GetInstance()->getPlayer()->GetOrigin()->X-m_pTransform->X)<=50)

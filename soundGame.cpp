@@ -3,7 +3,8 @@
 soundGame* soundGame::s_Instance = nullptr;
 
 soundGame::soundGame() {
-    if (Mix_OpenAudio(FREQ, MIX_DEFAULT_FORMAT, 2, CHUNK_SIZE) < 0)
+    Mix_AllocateChannels(5);
+    if (Mix_OpenAudio(FREQ, MIX_DEFAULT_FORMAT, 4, CHUNK_SIZE) < 0)
     {
         std::cerr << Mix_GetError() << "\n";
     }
@@ -14,6 +15,11 @@ void soundGame::playMusic(std::string id) {
     {
         std::cerr << Mix_GetError() << ": " << id << '\n';
     }
+}
+
+void soundGame::stopMusic()
+{
+    Mix_HaltMusic();
 }
 
 void soundGame::loadMusic(std::string id, std::string source) {
@@ -29,18 +35,18 @@ void soundGame::loadMusic(std::string id, std::string source) {
     }
 }
 
-void soundGame::playEffect(std::string id) {
-    if (Mix_PlayChannel(-1, m_effectMap[id], 0) == -1){
+void soundGame::playEffect(std::string id, int channel, int loops) {
+    if (Mix_PlayChannel(channel, m_effectMap[id], loops) == -1){
         std::cerr << Mix_GetError() << ": " << id << '\n';
     }
 }
 
-void soundGame::stopEffect(std::string id)
+void soundGame::stopEffect(int channel)
 {
-        Mix_HaltChannel(-1);
+        Mix_HaltChannel(channel);
 }
 
-void soundGame::loadEffect(std::string id, std::string source) {
+void soundGame::loadEffect(std::string id, std::string source, int channel) {
     Mix_Chunk* effect = Mix_LoadWAV(source.c_str());
     if (effect != nullptr)
     {

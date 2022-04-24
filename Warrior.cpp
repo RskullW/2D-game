@@ -1,6 +1,6 @@
 #include "Warrior.h"
 #include "TextureManager.h"
-#include <SDL2/SDL.h>g
+#include <SDL2/SDL.h>
 #include <cmath>
 #include "input.h"
 #include "Camera.h"
@@ -46,7 +46,7 @@ void Warrior::Draw()
 	m_Animation->Draw(m_pTransform->X, m_pTransform->Y, m_W, m_H, 1, 1, m_sFlip);
 	
 	
-	Vector2D cam = Camera::GetInstance()->GetPosition();
+    cam = Camera::GetInstance()->GetPosition();
 
 	SDL_Rect box = m_Collider->Get();
 	box.x -= cam.X;
@@ -58,10 +58,14 @@ void Warrior::DrawDeath() {
 
     if (isFailing == 1) {
         tempTime++;
-        soundGame::GetInstance()->playEffect("sound_die");
         SDL_Rect tempsrc = {0, 0, 960, 640}, tempdest = {0, 0, 960, 640};
-
         if (tempTime == 50) {
+
+            soundGame::GetInstance()->playEffect("sound_die", 2);
+            m_Health = 200;
+            m_LastSafePos.X = m_pTransform->X = m_Origin->X = 40;
+            m_LastSafePos.Y = m_pTransform->Y = m_Origin->X = 460;
+
             while (isFailing) {
                 SDL_RenderClear(Game::GetInstance()->GetRenderer());
                 SDL_SetRenderDrawColor(Game::GetInstance()->GetRenderer(), 0, 0, 0, 0);
@@ -75,9 +79,7 @@ void Warrior::DrawDeath() {
                 if (SDL_PollEvent(&ev)) {
                     tempTime = 0;
                     isFailing = 0;
-                    m_LastSafePos.X = m_pTransform->X = m_Origin->X = 40;
-                    m_LastSafePos.Y = m_pTransform->Y = m_Origin->X = 460;
-                    m_Health = 200;
+                    Game::GetInstance()->getFirstBoss()->GetStartPhrase() = 0;
                 }
             }
         }
@@ -90,12 +92,14 @@ void Warrior::Clean()
 
 void Warrior::Update(float dt)
 {
-	m_Running = 0;
 	m_RigidBody->UnSetForce();
 
 	if (input::GetInstance()->GetAxisRey(HORIZONTAL) == FORWARD && !m_Attacking)
 	{
-        soundGame::GetInstance()->playEffect("sound_run");
+        if (m_Running == 0 || m_Jumping)
+        {
+            soundGame::GetInstance()->playEffect("sound_run", 1);
+        }
 
 		if (input::GetInstance()->GetKeyDown(SDL_SCANCODE_LSHIFT))
 		{
@@ -113,8 +117,10 @@ void Warrior::Update(float dt)
 
 	if (input::GetInstance()->GetAxisRey(HORIZONTAL) == BACKWARD && !m_Attacking)
 	{
-        soundGame::GetInstance()->playEffect("sound_run");
-
+        if (m_Running == 0 || m_Jumping)
+        {
+            soundGame::GetInstance()->playEffect("sound_run", 1);
+        }
 
         if (input::GetInstance()->GetKeyDown(SDL_SCANCODE_LSHIFT))
 		{
@@ -143,7 +149,7 @@ void Warrior::Update(float dt)
 	{
         if (m_Attacking == 0)
         {
-            soundGame::GetInstance()->playEffect("attack");
+            soundGame::GetInstance()->playEffect("attack", 2);
 
             if (Game::GetInstance()->getFirstBoss()->GetNearPlayer())
             {
@@ -159,13 +165,13 @@ void Warrior::Update(float dt)
 	{
         if (m_Jumping == 0)
         {
-            soundGame::GetInstance()->stopEffect("sound_run");
+            soundGame::GetInstance()->stopEffect(1);
         }
 
 		m_Jumping = 1;
 		m_Grounded = 0;
 		m_RigidBody->ApplyForceY(UPWARD * m_JumpForce);
-        soundGame::GetInstance()->playEffect("sound_jump");
+        soundGame::GetInstance()->playEffect("sound_jump", 2);
 	}
     // Hold jump
 	if (input::GetInstance()->GetKeyDown(SDL_SCANCODE_SPACE) && m_Jumping && m_JumpTime > 0)
@@ -219,7 +225,8 @@ void Warrior::Update(float dt)
 	CheatJump();
 
     if (m_LastSafePos.X == m_pTransform->X && m_Jumping == false && m_Attacking == false){
-        soundGame::GetInstance()->stopEffect("sound_run");
+        soundGame::GetInstance()->stopEffect(1);
+        m_Running = 0;
     }
 
     // Collision Vasukov

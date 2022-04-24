@@ -18,11 +18,13 @@ public:
 
     void playMusic(std::string id);
     void loadMusic(std::string id, std::string source);
+    void stopMusic();
 
-    void playEffect(std::string id);
-    void loadEffect(std::string id, std::string source);
+    void playEffect(std::string id, int channel = -1, int loops = 0);
+    void loadEffect(std::string id, std::string source, int channel = -1);
+    void stopEffect(int channel = -1);
 
-    void stopEffect(std::string id);
+    void freeChunk(std::string id);
 
     inline static soundGame* GetInstance() {return s_Instance = (s_Instance != nullptr)?s_Instance:new soundGame();}
 

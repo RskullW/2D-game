@@ -37,11 +37,17 @@ public:
     // return boss
     inline Enemy* getFirstBoss() {return firstEnemy;}
     inline GameObject* getPlayer() {return player;}
+    // check the end game
+    inline bool getFinish() {return (aliveVas==false && alivePal == false && aliveStep == false)?true:false;}
+    // chang channel sound
+    inline int& GetChannel() {return numberChannel;}
 
 private:
 	Game() {};
 	bool m_bRunning = 1;
+    bool aliveVas = true, aliveStep = true, alivePal = true;
 
+    int numberChannel = 0;
 	Map* m_LevelMap;
     std::vector<GameObject*> m_GameObjects;
 

@@ -13,6 +13,7 @@ public:
     startWindow(std::string textureID, int srcH, int srcW, int destH, int destW)
     {
         m_pTextureID = TextureManager::GetInstance()->getTexture(textureID);
+        pathString = textureID;
         src.h = srcH;
         src.w = srcW;
         dest.h = destH;
@@ -20,7 +21,7 @@ public:
         src.x = src.y = dest.x = dest.y = 0;
     }
     void draw() {
-        soundGame::GetInstance()->playEffect("start_menu");
+        soundGame::GetInstance()->playEffect(pathString);
 
         while (timeStartWindow++ != 1000) {
             SDL_RenderClear(Game::GetInstance()->GetRenderer());
@@ -34,5 +35,6 @@ private:
     SDL_Texture* m_pTextureID;
     SDL_Rect src, dest;
 
+    std::string pathString;
     int timeStartWindow = 0;
 };

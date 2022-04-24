@@ -12,8 +12,6 @@
 
 Game* Game::s_Instance = nullptr;
 
-static bool aliveVas = 1, aliveStep = 1, alivePal = 1;
-
 void Game::init(const char* title, int xpos, int ypos, int w, int h, bool fullscreen)
 {
 	int flags = (fullscreen)?SDL_WINDOW_FULLSCREEN:0;
@@ -110,10 +108,12 @@ void Game::Update()
         }
         return;
     }
-
+    // Check alive first boss
     if (aliveVas){
         if (firstEnemy->GetHealth()<=0){
             aliveVas = 0;
+            aliveStep = 0;
+            alivePal = 0;
             m_GameObjects[0]->Clean();
             m_GameObjects.erase(m_GameObjects.begin());
         }
@@ -136,6 +136,8 @@ void Game::clean()
 	TextureManager::GetInstance()->clean();
 
     mainmenu->clean();
+
+    soundGame::GetInstance()->clean();
 
     SDL_DestroyWindow(m_pWindow);
 	SDL_DestroyRenderer(m_pRenderer);

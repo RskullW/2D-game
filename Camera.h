@@ -9,7 +9,7 @@ class Camera
 {
 public:
 	inline static Camera* GetInstance() { return s_Instance = (s_Instance != nullptr) ? s_Instance : new Camera(); }
-	inline SDL_Rect GetViewBox() { return m_ViewBox; }
+	inline SDL_Rect& GetViewBox() { return m_ViewBox; }
 	inline Vector2D GetPosition() { return m_Position; }
 	inline void SetTarget(Pointer* target) { m_Target = target; }
 	void Update(float dt);
