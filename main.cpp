@@ -2,16 +2,20 @@
 #include "Timer.h"
 #include "soundGame.h"
 #include "startWindow.h"
+#include "FontsManager.h"
 
 int WinMain(int argc, char* argv[])
 {
-	Game::GetInstance()->init("Отчислись или умри", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, false);
+	Game::GetInstance()->init("Числанись или умри", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, false);
 
     startWindow* Start = new startWindow("start_menu", SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH);
     Start->draw();
     delete Start;
 
     soundGame::GetInstance()->playMusic("startMenu");
+
+    Timer::GetInstance()->Start();
+
     while (Game::GetInstance()->running())
 	{
 		Game::GetInstance()->handleEvents();

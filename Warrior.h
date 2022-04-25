@@ -32,7 +32,7 @@ public:
 	void clearInputCheats(bool*, int);
 
     Vector2D GetPosPlayer() {return m_LastSafePos;}
-    Vector2D& GetCam() {return cam;}
+
     virtual float& GetHealth() {return m_Health;}
 
 

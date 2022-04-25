@@ -8,6 +8,8 @@
 #include "Camera.h"
 #include "ObjectFactory.h"
 #include "soundGame.h"
+#include "SDL2/SDL_ttf.h"
+#include "FontsManager.h"
 
 
 Game* Game::s_Instance = nullptr;
@@ -16,7 +18,7 @@ void Game::init(const char* title, int xpos, int ypos, int w, int h, bool fullsc
 {
 	int flags = (fullscreen)?SDL_WINDOW_FULLSCREEN:0;
 
-	if (SDL_Init(SDL_INIT_EVERYTHING) != 0 && IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) != 0)
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0 && IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) != 0 && TTF_Init() != 0)
 	{
 		 SDL_Log("Init has failed: %s", SDL_GetError());
 		m_bRunning = false;
@@ -50,15 +52,20 @@ void Game::init(const char* title, int xpos, int ypos, int w, int h, bool fullsc
 
     m_LevelMap = mapParser::GetInstance()->GetMaps("MAP");
 
-	Properties* props = new Properties("player", 50, 460, 112, 113);
-
+    Properties* props = new Properties("player", 50, 460, 112, 113);
     player = ObjectFactory::GetInstance()->CreateObject("PLAYER", props);
     firstEnemy = new Enemy(new Properties("firstBoss", 2050, 510, 78, 78, SDL_FLIP_HORIZONTAL));
+    secondEnemy = new secondBoss(new Properties("secondBoss", 4267, 328, 100, 74, SDL_FLIP_HORIZONTAL));
 
-	m_GameObjects.push_back(firstEnemy);
-    m_GameObjects.push_back(player);
+    m_GameObjects["secondEnemy"] = secondEnemy;
+    m_GameObjects["firstEnemy"] = firstEnemy;
+    m_GameObjects["player"] = player;
 
     Camera::GetInstance()->SetTarget(player->GetOrigin());
+
+    FontsManager::GetInstance()->Add("../Assets/fonts/MachinaOrto.ttf", "TimerText", 48);
+
+    progressMission = new ProgressBar("progress");
 
     mainmenu = new menu("mainmenu", SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH);
     mainmenu->init();
@@ -76,11 +83,21 @@ void Game::renderer()
 	SDL_SetRenderDrawColor(m_pRenderer, 0, 0, 0, 0);
 
     TextureManager::GetInstance()->Draw("background", 0, 0, 8160, 1024, 1, 1, 1.0f);
-	m_LevelMap->Render();
-	for (int i = 0; i != m_GameObjects.size(); ++i)
-	{
-		m_GameObjects[i]->Draw();
-	}
+
+    m_LevelMap->Render();
+
+    m_GameObjects["player"]->Draw();
+
+    if (aliveVas == 1) {
+        m_GameObjects["firstEnemy"]->Draw();
+    }
+
+    if (aliveStep == 1) {
+        m_GameObjects["secondEnemy"]->Draw();
+    }
+
+    Timer::GetInstance()->Draw("TimerText");
+    progressMission->Draw();
 
     SDL_RenderPresent(m_pRenderer);
 }
@@ -109,38 +126,79 @@ void Game::Update()
         }
         return;
     }
+
     // Check alive first boss
     if (aliveVas){
         if (firstEnemy->GetHealth()<=0){
             aliveVas = 0;
-            m_GameObjects.erase(m_GameObjects.begin());
+            m_GameObjects.erase("firstEnemy");
             soundGame::GetInstance()->playEffect("lastPhraseVasukov");
             soundGame::GetInstance()->playMusic("startMenu");
         }
     }
 
-    if (player->GetHealth()<=0 && aliveVas==0)
-    {
-        m_GameObjects.push_back(firstEnemy);
-        std::swap(m_GameObjects[0], m_GameObjects[1]);
-        aliveVas = 1;
+    if (aliveStep){
+        if (secondEnemy->GetHealth()<=0){
+            aliveStep = 0;
+            m_GameObjects.erase("secondEnemy");
+
+            soundGame::GetInstance()->playEffect("lastPhraseStepanov");
+            soundGame::GetInstance()->playMusic("startMenu");
+        }
     }
+
+    if (player->GetHealth()<=0)
+    {
+        m_GameObjects.clear();
+        delete firstEnemy;
+        delete secondEnemy;
+
+        firstEnemy = new Enemy(new Properties("firstBoss", 2050, 510, 78, 78, SDL_FLIP_HORIZONTAL));
+        secondEnemy = new secondBoss(new Properties("secondBoss", 4267, 328, 100, 74, SDL_FLIP_HORIZONTAL));
+
+        m_GameObjects["secondEnemy"] = secondEnemy;
+        m_GameObjects["firstEnemy"] = firstEnemy;
+        m_GameObjects["player"] = player;
+
+        aliveStep = aliveVas = true;
+
+        Timer::GetInstance()->Start();
+
+    }
+
 
 	m_LevelMap->Update();
 
-	for (int i = 0; i != m_GameObjects.size(); ++i) {
-        m_GameObjects[i]->Update(dt);
+    m_GameObjects["player"]->Update(dt);
+
+    if (aliveVas == 1) {
+        m_GameObjects["firstEnemy"]->Update(dt);
+    }
+
+    if (aliveStep == 1) {
+        m_GameObjects["secondEnemy"]->Update(dt);
     }
 
     Camera::GetInstance()->Update(dt);
+
+    progressMission->Update(dt);
 }
 
 void Game::clean()
 {
-	for (int i = 0; i != m_GameObjects.size(); ++i) {
-        m_GameObjects[i]->Clean();
+    m_GameObjects["player"]->Clean();
+
+    if (aliveVas) {
+        m_GameObjects["firstEnemy"]->Clean();
     }
-	TextureManager::GetInstance()->clean();
+
+    if (aliveStep) {
+        m_GameObjects["secondEnemy"]->Clean();
+    }
+
+    progressMission->Clean();
+
+    TextureManager::GetInstance()->clean();
 
     mainmenu->clean();
 
@@ -149,6 +207,7 @@ void Game::clean()
     SDL_DestroyWindow(m_pWindow);
 	SDL_DestroyRenderer(m_pRenderer);
 
+    TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 }

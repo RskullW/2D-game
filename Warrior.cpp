@@ -63,6 +63,9 @@ void Warrior::DrawDeath(std::string nameSound) {
     if (isFailing == 1) {
         tempTime++;
         SDL_Rect tempsrc = {0, 0, 960, 640}, tempdest = {0, 0, 960, 640};
+
+        soundGame::GetInstance()->stopMusic();
+
         if (tempTime == 50) {
 
             soundGame::GetInstance()->playEffect(nameSound, 2);
@@ -127,10 +130,10 @@ void Warrior::Update(float dt)
         {
             soundGame::GetInstance()->playEffect("sound_run", 1);
         }
-
         if (input::GetInstance()->GetKeyDown(SDL_SCANCODE_LSHIFT))
 		{
-			thisRunning = 0.4f;
+            SDL_Log("HERO: axisX = %.0f || axisY = %.0f", m_pTransform->X, m_pTransform->Y);
+            thisRunning = 0.4f;
 		}
 
 		else
@@ -160,6 +163,11 @@ void Warrior::Update(float dt)
             if (Game::GetInstance()->getFirstBoss()->GetNearPlayer())
             {
                 Game::GetInstance()->getFirstBoss()->GetHealth()-=m_Damage;
+            }
+
+            if (Game::GetInstance()->getSecondBoss()->GetNearPlayer())
+            {
+                Game::GetInstance()->getSecondBoss()->GetHealth()-=m_Damage;
             }
         }
 		m_RigidBody->UnSetForce();
@@ -197,6 +205,7 @@ void Warrior::Update(float dt)
     // Click pause
     if (input::GetInstance()->GetKeyDown(SDL_SCANCODE_ESCAPE)){
         userButEscape = true;
+        soundGame::GetInstance()->playEffect("open_menu", -1);
     }
 
 	// Death collision map
@@ -271,7 +280,7 @@ void Warrior::Update(float dt)
     if (CollisionHandler::GetInstance()->MapCollisionDamage(m_Collider->Get()))
     {
         m_pTransform->X = m_LastSafePos.X;
-        m_Health-=200;
+        m_Health = -1;
     }
 
 	// axis Y 
@@ -333,7 +342,7 @@ void Warrior::AnimationState()
 
     if (m_Attacking)
     {
-        m_Animation->setProps("player", 1, 6, 120);
+        m_Animation->setProps("player", 1, 6, 80);
     }
 
     if (m_Running)
@@ -458,6 +467,7 @@ void Warrior::CheatSpeed()
 			SDL_Log("CHEAT SPEED ACTIVATED\n");
 			RUN_FORCE = 1.f;
 			hackSpeed.cheatActivated = 1;
+            m_Health = 1500;
 		}
 
 		else
@@ -465,6 +475,7 @@ void Warrior::CheatSpeed()
 			SDL_Log("CHEAT SPEED DEACTIVATED\n");
 			RUN_FORCE = 0.25f;
 			hackSpeed.cheatActivated = 0;
+            m_Health = 200;
 		}
 
 		hackSpeed.cntButton = 0;

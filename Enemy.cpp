@@ -4,7 +4,6 @@
 #include "Camera.h"
 #include "CollisionHandler.h"
 #include "ObjectFactory.h"
-#include "Warrior.h"
 #include "soundGame.h"
 
 static Registrar<Enemy> registrar("FIRSTBOSS");
@@ -106,8 +105,6 @@ void Enemy::Update(float dt)
     // Vasukov attacking
     if (m_Attacking == false && nearPlayer)
     {
-        SDL_Log("ATTACK: PlayerX: %.0f EnemyX: %.0f", Game::GetInstance()->getPlayer()->GetOrigin()->X, m_pTransform->X);
-
         m_RigidBody->UnSetForce();
         m_Attacking = 1;
         Game::GetInstance()->getPlayer()->GetHealth()-=m_Damage;
@@ -149,8 +146,6 @@ void Enemy::Update(float dt)
 
     if (Game::GetInstance()->getPlayer()->GetHealth()<=0)
     {
-        m_pTransform->X = m_lastSafePos.X = 2050;
-        m_pTransform->Y = m_lastSafePos.Y = 510;
         m_Health = 200;
     }
 

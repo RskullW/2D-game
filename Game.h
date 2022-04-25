@@ -3,10 +3,16 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include <map>
+
 #include "Map.h"
 #include "GameObject.h"
 #include "menu.h"
 #include "Enemy.h"
+#include "secondBoss.h"
+#include "Timer.h"
+#include "ProgressBar.h"
+
 
 #define MAP_WIDTH 8160//10384
 #define MAP_HEIGHT 1024//640
@@ -36,20 +42,26 @@ public:
 	inline Map* GetMap() { return m_LevelMap; }
     // return boss
     inline Enemy* getFirstBoss() {return firstEnemy;}
+    inline secondBoss* getSecondBoss() {return secondEnemy;}
+
     inline GameObject* getPlayer() {return player;}
     // check the end game
     inline bool getFinish() {return (aliveVas==false && alivePal == false && aliveStep == false)?true:false;}
     // chang channel sound
     inline int& GetChannel() {return numberChannel;}
+public:
+    inline bool getAliveVas() {return aliveVas;}
+    inline bool getAliveStep() {return aliveStep;}
+    inline bool getAliveUnk() {return alivePal;}
 
 private:
 	Game() {};
 	bool m_bRunning = 1;
-    bool aliveVas = true, aliveStep = true, alivePal = true;
+    bool aliveVas = true, aliveStep = true, alivePal = false;
 
     int numberChannel = 0;
 	Map* m_LevelMap;
-    std::vector<GameObject*> m_GameObjects;
+    std::map<std::string, GameObject*> m_GameObjects;
 
     SDL_Window* m_pWindow;
 	SDL_Renderer* m_pRenderer;
@@ -59,5 +71,7 @@ private:
     menu* mainmenu;
 
     Enemy* firstEnemy;
+    secondBoss* secondEnemy;
     GameObject* player;
+    ProgressBar* progressMission;
 };

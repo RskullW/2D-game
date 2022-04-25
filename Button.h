@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include "TextureManager.h"
 #include "mouse.h"
+#include "soundGame.h"
 
 class Button
 {
@@ -26,13 +27,17 @@ public:
     {
         if (SDL_HasIntersection(&dest, &mse.getPoint()))
         {
+            if (m_isSelectedFirst == false) {
+                soundGame::GetInstance()->playEffect("hover_menu", 0);
+                m_isSelectedFirst = true;
+            }
             m_isSelected = true;
             src.x = src.w;
         }
 
         else
         {
-            m_isSelected = false;
+            m_isSelectedFirst = m_isSelected = false;
             src.x = 0;
         }
     }
@@ -71,6 +76,7 @@ public:
     bool getSelected() {return m_isSelected;}
 private:
     bool m_isSelected = false;
+    bool m_isSelectedFirst = false;
     SDL_Texture* m_Texture;
     SDL_Rect src, dest;
 };
