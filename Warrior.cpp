@@ -139,7 +139,6 @@ void Warrior::Update(float dt)
         }
         if (input::GetInstance()->GetKeyDown(SDL_SCANCODE_LSHIFT))
 		{
-            SDL_Log("HERO: axisX = %.0f || axisY = %.0f", m_pTransform->X, m_pTransform->Y);
             thisRunning = 0.4f;
 		}
 
@@ -175,6 +174,11 @@ void Warrior::Update(float dt)
             if (Game::GetInstance()->getSecondBoss()->GetNearPlayer())
             {
                 Game::GetInstance()->getSecondBoss()->GetHealth()-=m_Damage;
+            }
+
+            if (Game::GetInstance()->getThirdBoss()->GetNearPlayer())
+            {
+                Game::GetInstance()->getThirdBoss()->GetHealth()-=m_Damage;
             }
         }
 		m_RigidBody->UnSetForce();

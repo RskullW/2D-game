@@ -17,10 +17,11 @@ Bullet::Bullet(std::string id, int x, int y, int w, int h):m_pTextureID(id) {
 void Bullet::Add(int startX, int startY, int endX, int endY) {
     m_AddBullet = true;
 
-    m_coordinate.startX = startX+40;
-    m_coordinate.startY = startY+20;
+    m_coordinate.startX = startX;
+    m_coordinate.startY = startY;
     m_coordinate.endX = endX;
-    m_coordinate.endY = endY+20;
+    m_coordinate.endY = endY;
+
 }
 
 bool Bullet::CheckPosition(Vector2D coordNPC) {
@@ -33,11 +34,17 @@ bool Bullet::CheckPosition(Vector2D coordNPC) {
         temp.y = m_coordinate.startY;
         temp.w = m_Size.w;
         temp.h = m_Size.h;
+
+        if (abs(m_coordinate.startX-int(coordNPC.X))<=30 && abs(m_coordinate.startY - int(coordNPC.Y))<=27) {
+            m_AddBullet = false;
+            return 1;
+        }
+
         if (CollisionHandler::GetInstance()->MapCollision(temp))
         {
             m_AddBullet = false;
             return 0;
-        }
+        }// LEFT 412 || 455 RIGHT
 
         if (abs(m_coordinate.startY-m_coordinate.endY)<=5 && abs(m_coordinate.startX-m_coordinate.endX)<=5 )
         {
@@ -45,12 +52,12 @@ bool Bullet::CheckPosition(Vector2D coordNPC) {
             return 0;
         }
 
-        if (m_coordinate.startX>m_coordinate.endX) {
+        if (m_coordinate.startX<m_coordinate.endX) {
             m_coordinate.startX+=1;
             m_Size.x+=1;
         }
 
-        else if (m_coordinate.startX < m_coordinate.endX) {
+        else if (m_coordinate.startX > m_coordinate.endX) {
             m_coordinate.startX-=1;
             m_Size.x-=1;
         }
@@ -60,23 +67,18 @@ bool Bullet::CheckPosition(Vector2D coordNPC) {
         }
 
         if (m_coordinate.startY>m_coordinate.endY) {
-            m_coordinate.startY+=1;
-            m_Size.y+=1;
-        }
-
-        else if (m_coordinate.startY<m_coordinate.endY)
-        {
             m_coordinate.startY-=1;
             m_Size.y-=1;
         }
 
+        else if (m_coordinate.startY<m_coordinate.endY)
+        {
+            m_coordinate.startY+=1;
+            m_Size.y+=1;
+        }
+
         else {
             m_coordinate.startY = m_coordinate.startY;
-        }
-        // 510 - axisY firstBoss
-        if (abs(m_coordinate.startX-coordNPC.X)<=30 && abs(m_coordinate.startY - 510)<=30) {
-            m_AddBullet = false;
-            return 1;
         }
 
     }

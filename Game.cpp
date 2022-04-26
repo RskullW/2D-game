@@ -56,7 +56,9 @@ void Game::init(const char* title, int xpos, int ypos, int w, int h, bool fullsc
     player = ObjectFactory::GetInstance()->CreateObject("PLAYER", props);
     firstEnemy = new Enemy(new Properties("firstBoss", 2050, 510, 78, 78, SDL_FLIP_HORIZONTAL));
     secondEnemy = new secondBoss(new Properties("secondBoss", 4267, 328, 100, 74, SDL_FLIP_HORIZONTAL));
+    thirdEnemy = new ThirdBoss(new Properties("thirdBoss", 7500, 480, 80, 80, SDL_FLIP_HORIZONTAL));
 
+    m_GameObjects["thirdEnemy"] = thirdEnemy;
     m_GameObjects["secondEnemy"] = secondEnemy;
     m_GameObjects["firstEnemy"] = firstEnemy;
     m_GameObjects["player"] = player;
@@ -96,6 +98,10 @@ void Game::renderer()
         m_GameObjects["secondEnemy"]->Draw();
     }
 
+    if (alivePal == 1) {
+        m_GameObjects["thirdEnemy"]->Draw();
+    }
+
     Timer::GetInstance()->Draw("TimerText");
     progressMission->Draw();
 
@@ -128,7 +134,7 @@ void Game::Update()
     }
 
     // Check alive first boss
-    if (aliveVas){
+    if (aliveVas) {
         if (firstEnemy->GetHealth()<=0){
             aliveVas = 0;
             m_GameObjects.erase("firstEnemy");
@@ -137,12 +143,22 @@ void Game::Update()
         }
     }
 
-    if (aliveStep){
+    if (aliveStep) {
         if (secondEnemy->GetHealth()<=0){
             aliveStep = 0;
             m_GameObjects.erase("secondEnemy");
 
             soundGame::GetInstance()->playEffect("lastPhraseStepanov");
+            soundGame::GetInstance()->playMusic("startMenu");
+        }
+    }
+
+    if (alivePal) {
+        if (thirdEnemy->GetHealth() <= 0) {
+            alivePal = 0;
+            m_GameObjects.erase("thirdEnemy");
+
+            soundGame::GetInstance()->playEffect("lastPhraseUnk");
             soundGame::GetInstance()->playMusic("startMenu");
         }
     }
@@ -155,12 +171,14 @@ void Game::Update()
 
         firstEnemy = new Enemy(new Properties("firstBoss", 2050, 510, 78, 78, SDL_FLIP_HORIZONTAL));
         secondEnemy = new secondBoss(new Properties("secondBoss", 4267, 328, 100, 74, SDL_FLIP_HORIZONTAL));
+        thirdEnemy = new ThirdBoss(new Properties("thirdBoss", 7500, 480, 80, 80, SDL_FLIP_HORIZONTAL));
 
+        m_GameObjects["thirdEnemy"] = thirdEnemy;
         m_GameObjects["secondEnemy"] = secondEnemy;
         m_GameObjects["firstEnemy"] = firstEnemy;
         m_GameObjects["player"] = player;
 
-        aliveStep = aliveVas = true;
+        aliveStep = aliveVas = alivePal = true;
 
         Timer::GetInstance()->Start();
 
@@ -179,6 +197,10 @@ void Game::Update()
         m_GameObjects["secondEnemy"]->Update(dt);
     }
 
+    if (alivePal == 1) {
+        m_GameObjects["thirdEnemy"]->Update(dt);
+    }
+
     Camera::GetInstance()->Update(dt);
 
     progressMission->Update(dt);
@@ -194,6 +216,10 @@ void Game::clean()
 
     if (aliveStep) {
         m_GameObjects["secondEnemy"]->Clean();
+    }
+
+    if (alivePal) {
+        m_GameObjects["thirdEnemy"]->Clean();
     }
 
     progressMission->Clean();

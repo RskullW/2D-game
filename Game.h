@@ -10,6 +10,7 @@
 #include "menu.h"
 #include "Enemy.h"
 #include "secondBoss.h"
+#include "thirdBoss.h"
 #include "Timer.h"
 #include "ProgressBar.h"
 
@@ -41,8 +42,6 @@ public:
 	inline SDL_Renderer* GetRenderer() { return m_pRenderer; }
 	inline Map* GetMap() { return m_LevelMap; }
     // return boss
-    inline Enemy* getFirstBoss() {return firstEnemy;}
-    inline secondBoss* getSecondBoss() {return secondEnemy;}
 
     inline GameObject* getPlayer() {return player;}
     // check the end game
@@ -50,6 +49,10 @@ public:
     // chang channel sound
     inline int& GetChannel() {return numberChannel;}
 public:
+    inline Enemy* getFirstBoss() {return firstEnemy;}
+    inline secondBoss* getSecondBoss() {return secondEnemy;}
+    inline ThirdBoss* getThirdBoss() {return thirdEnemy;}
+
     inline bool getAliveVas() {return aliveVas;}
     inline bool getAliveStep() {return aliveStep;}
     inline bool getAliveUnk() {return alivePal;}
@@ -57,7 +60,7 @@ public:
 private:
 	Game() {};
 	bool m_bRunning = 1;
-    bool aliveVas = true, aliveStep = true, alivePal = false;
+    bool aliveVas = true, aliveStep = true, alivePal = true;
 
     int numberChannel = 0;
 	Map* m_LevelMap;
@@ -72,6 +75,7 @@ private:
 
     Enemy* firstEnemy;
     secondBoss* secondEnemy;
+    ThirdBoss* thirdEnemy;
     GameObject* player;
     ProgressBar* progressMission;
 };

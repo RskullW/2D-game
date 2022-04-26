@@ -27,6 +27,8 @@ Enemy::Enemy(Properties* props) : Character(props)
 
     m_Health = 200;
     m_Damage = 25;
+
+
 }
 
 void Enemy::Draw()

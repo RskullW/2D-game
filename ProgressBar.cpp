@@ -13,7 +13,7 @@ void ProgressBar::Draw() {
 void ProgressBar::Update(float dt) {
     m_aliveVas = Game::GetInstance()->getAliveVas();
     m_aliveStep = Game::GetInstance()->getAliveStep();
-    m_alivePal = false;
+    m_alivePal = Game::GetInstance()->getAliveUnk();
 
     if (m_aliveVas && m_aliveStep && m_alivePal){
         m_Animation->setProps(m_pTextureID, 0, 1, 1000);
