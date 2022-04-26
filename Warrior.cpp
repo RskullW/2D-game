@@ -235,12 +235,21 @@ void Warrior::Update(float dt)
     if (CollisionHandler::GetInstance()->MapCollisionDamage(m_Collider->Get()) ) {
         m_pTransform->X = m_LastSafePos.X;
         isFailing = 1;
+
+        for (int i = 0; i < 5; ++i) {
+            soundGame::GetInstance()->stopEffect(i);
+        }
         DrawDeath("sound_die");
         soundGame::GetInstance()->playMusic("startMenu");
     }
 
     else if (m_Health<=0){
         isFailing = 1;
+
+        for (int i = 0; i < 5; ++i) {
+            soundGame::GetInstance()->stopEffect(i);
+        }
+
         DrawDeath("sound_die_enemy");
         soundGame::GetInstance()->playMusic("startMenu");
     }

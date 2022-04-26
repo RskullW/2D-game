@@ -35,7 +35,7 @@ bool Bullet::CheckPosition(Vector2D coordNPC) {
         temp.w = m_Size.w;
         temp.h = m_Size.h;
 
-        if (abs(m_coordinate.startX-int(coordNPC.X))<=30 && abs(m_coordinate.startY - int(coordNPC.Y))<=27) {
+        if (abs(m_coordinate.startX-int(coordNPC.X))<=32 && abs(m_coordinate.startY - int(coordNPC.Y))<=32) {
             m_AddBullet = false;
             return 1;
         }

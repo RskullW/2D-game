@@ -26,7 +26,7 @@ ThirdBoss::ThirdBoss(Properties* props) : Character(props)
     m_Animation = new SpriteAnim();
     m_Animation->setProps(m_pTextureID, 0, 4, 120);
 
-    m_Health = 300;
+    m_Health = 400;
     m_Damage = 25;
 
     m_Bullet = new Bullet("ammo", 0, 0, 81, 53);
@@ -55,7 +55,7 @@ void ThirdBoss::Draw()
         hpBar.y += 5;
         hpBar.w -= 10;
         hpBar.h -= 10;
-        hpBar.w = (double) m_Health / 300 * hpBar.w;
+        hpBar.w = (double) m_Health / 400 * hpBar.w;
         SDL_SetRenderDrawColor(Game::GetInstance()->GetRenderer(), 0, 255, 0, 255);
         SDL_RenderFillRect(Game::GetInstance()->GetRenderer(), &hpBar);
 
@@ -87,6 +87,10 @@ void ThirdBoss::Update(float dt)
 
     else if (fabs(Game::GetInstance()->getPlayer()->GetOrigin()->X-m_pTransform->X)<=300)
     {
+        if (Game::GetInstance()->getPlayer()->GetOrigin()->X<m_pTransform->X) {
+            m_sFlip = SDL_FLIP_HORIZONTAL;
+        }
+
         nearPlayer = true;
     }
 
@@ -95,7 +99,7 @@ void ThirdBoss::Update(float dt)
     }
 
     // Unknown person run right
-    if ((Game::GetInstance()->getPlayer()->GetOrigin()->X-m_pTransform->X)>300 && fabs(Game::GetInstance()->getPlayer()->GetOrigin()->X-m_pTransform->X)<=600 && (Game::GetInstance()->getPlayer()->GetOrigin()->X-50 > m_lastSafePos.X)) {
+    if ((Game::GetInstance()->getPlayer()->GetOrigin()->X-m_pTransform->X)>=300 && fabs(Game::GetInstance()->getPlayer()->GetOrigin()->X-m_pTransform->X)<=600 && (Game::GetInstance()->getPlayer()->GetOrigin()->X-50 > m_lastSafePos.X)) {
         m_RigidBody->ApplyForceX(3*thisRunning);
         m_sFlip = SDL_FLIP_NONE;
         m_Running = 1;
@@ -112,6 +116,10 @@ void ThirdBoss::Update(float dt)
 
     else if (fabs(Game::GetInstance()->getPlayer()->GetOrigin()->X-m_pTransform->X)<=300)
     {
+        if (Game::GetInstance()->getPlayer()->GetOrigin()->X>=m_pTransform->X) {
+            m_sFlip = SDL_FLIP_NONE;
+        }
+
         nearPlayer = true;
     }
 
@@ -206,4 +214,6 @@ void ThirdBoss::AnimationState() {
 void ThirdBoss::Clean()
 {
     TextureManager::GetInstance()->Drop(m_pTextureID);
+    delete m_Bullet;
+    delete m_Animation;
 }
