@@ -43,6 +43,8 @@ Warrior::Warrior(Properties* props): Character(props)
     // Location HPbar
     m_AnimationHP = new SpriteAnim();
     m_AnimationHP->setProps("hp", 0, 5, 150);
+
+//    m_bullet = new Bullet("ammo", 0, 0, 81, 53);
 }
 
 void Warrior::Draw()
@@ -51,6 +53,11 @@ void Warrior::Draw()
     m_AnimationHP->Draw(cam.X, 0, 289, 45);
 
     cam = Camera::GetInstance()->GetPosition();
+
+//    if (m_bullet->GetAddBullet())
+//    {
+//        m_bullet->Draw();
+//    }
 
 //	SDL_Rect box = m_Collider->Get();
 //	box.x -= cam.X;
@@ -173,6 +180,18 @@ void Warrior::Update(float dt)
 		m_RigidBody->UnSetForce();
 		m_Attacking = 1;
 	}
+
+//    if (input::GetInstance()->GetKeyDown(SDL_SCANCODE_M) && m_Grounded)
+//    {
+//        if (m_Attacking == 0)
+//        {
+//            soundGame::GetInstance()->playEffect("attack", 2);
+//            m_bullet->Add(m_pTransform->X, m_pTransform->Y, m_LastSafePos.X-1000, m_pTransform->Y);
+//        }
+//
+//        m_RigidBody->UnSetForce();
+//        m_Attacking = 1;
+//    }
 
 	// Jump
 	if (input::GetInstance()->GetKeyDown(SDL_SCANCODE_SPACE) && m_Grounded)
@@ -325,10 +344,18 @@ void Warrior::Update(float dt)
         m_pTransform->Y = m_LastSafePos.Y = 460;
     }
 
+//    if (m_bullet->GetAddBullet())
+//    {
+//        if (m_bullet->CheckPosition(Game::GetInstance()->getFirstBoss()->getPosEnemy()) == true){
+//            Game::GetInstance()->getFirstBoss()->GetHealth()-=(m_Damage-20);
+//        }
+//    }
+
 	AnimationState();
 	m_Animation->Update(dt);
     AnimationHPBAR();
     m_AnimationHP->Update(dt);
+//    m_bullet->Update(dt);
 }
 void Warrior::AnimationState()
 {

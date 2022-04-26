@@ -6,6 +6,8 @@
 #include "Vector2D.h"
 #include "SpriteAnim.h"
 #include "Enemy.h"
+#include "Bullet.h"
+
 
 //#define JUMP_TIME 10.0f;
 //#define JUMP_FORCE 7.0f
@@ -68,6 +70,5 @@ private:
 
 	Vector2D m_LastSafePos;
     Vector2D cam;
-
 };
 
