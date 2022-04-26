@@ -44,7 +44,7 @@ bool Bullet::CheckPosition(Vector2D coordNPC) {
         {
             m_AddBullet = false;
             return 0;
-        }// LEFT 412 || 455 RIGHT
+        }
 
         if (abs(m_coordinate.startY-m_coordinate.endY)<=5 && abs(m_coordinate.startX-m_coordinate.endX)<=5 )
         {
@@ -53,12 +53,12 @@ bool Bullet::CheckPosition(Vector2D coordNPC) {
         }
 
         if (m_coordinate.startX<m_coordinate.endX) {
-            m_coordinate.startX+=1;
+            m_coordinate.startX+=3;
             m_Size.x+=1;
         }
 
         else if (m_coordinate.startX > m_coordinate.endX) {
-            m_coordinate.startX-=1;
+            m_coordinate.startX-=3;
             m_Size.x-=1;
         }
 

@@ -53,7 +53,7 @@ void Game::init(const char* title, int xpos, int ypos, int w, int h, bool fullsc
     m_LevelMap = mapParser::GetInstance()->GetMaps("MAP");
 
     Properties* props = new Properties("player", 50, 460, 112, 113);
-//    Properties* props = new Properties("player", 7031, 371, 112, 113); Тестовая строка, для телепортации к последнему боссу
+//    Properties* props = new Properties("player", 7031, 371, 112, 113); //Тестовая строка, для телепортации к последнему боссу
     player = ObjectFactory::GetInstance()->CreateObject("PLAYER", props);
     firstEnemy = new Enemy(new Properties("firstBoss", 2050, 510, 78, 78, SDL_FLIP_HORIZONTAL));
     secondEnemy = new secondBoss(new Properties("secondBoss", 4267, 328, 100, 74, SDL_FLIP_HORIZONTAL));

@@ -14,7 +14,6 @@
 #include "Timer.h"
 #include "ProgressBar.h"
 
-
 #define MAP_WIDTH 8160//10384
 #define MAP_HEIGHT 1024//640
 #define SCREEN_WIDTH 960//1280
@@ -47,7 +46,6 @@ public:
     // check the end game
     inline bool getFinish() {return (aliveVas==false && alivePal == false && aliveStep == false)?true:false;}
     // chang channel sound
-    inline int& GetChannel() {return numberChannel;}
 public:
     inline Enemy* getFirstBoss() {return firstEnemy;}
     inline secondBoss* getSecondBoss() {return secondEnemy;}
@@ -57,25 +55,27 @@ public:
     inline bool getAliveStep() {return aliveStep;}
     inline bool getAliveUnk() {return alivePal;}
 
+    inline void SetNick(std::string newNick) {m_nickname = newNick;}
+    inline std::string GetNick() {return m_nickname;}
+
+
 private:
 	Game() {};
 	bool m_bRunning = 1;
     bool aliveVas = true, aliveStep = true, alivePal = true;
-
     int numberChannel = 0;
-	Map* m_LevelMap;
-    std::map<std::string, GameObject*> m_GameObjects;
-
+    std::string m_nickname;
+private:
     SDL_Window* m_pWindow;
 	SDL_Renderer* m_pRenderer;
-
     static Game* s_Instance;
-
+private:
     menu* mainmenu;
-
     Enemy* firstEnemy;
     secondBoss* secondEnemy;
     ThirdBoss* thirdEnemy;
     GameObject* player;
     ProgressBar* progressMission;
+    Map* m_LevelMap;
+    std::map<std::string, GameObject*> m_GameObjects;
 };

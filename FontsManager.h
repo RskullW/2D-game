@@ -18,6 +18,7 @@ private:
     FontsManager() {};
 
 private:
+
     std::map<std::string, TTF_Font*> m_FontMap;
     static FontsManager* s_Instance;
 

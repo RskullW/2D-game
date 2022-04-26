@@ -19,6 +19,7 @@ void Timer::Tick()
 
 void Timer::Start() {
     timeNow = 0;
+    m_isStart = true;
 }
 
 void Timer::Draw(std::string id) {

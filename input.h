@@ -14,7 +14,8 @@ public:
 
 	void Listen();
 	bool GetKeyDown(SDL_Scancode key);
-	bool GetKey();
+
+    bool GetKey();
     bool GetMouseButton();
 
 	int GetAxisRey(Axis axis);

@@ -13,7 +13,9 @@ public:
 	void Tick();
 
     void Start();
+    bool GetStart() {return m_isStart;};
     void Draw(std::string id);
+
 
 private:
 	Timer() {};
@@ -22,6 +24,7 @@ private:
     float  m_resultTime;
     int timeNow = 0;
     float timeFloat = 0;
+    bool m_isStart;
 
 	float m_DeltaTime, m_LastTime;
 private:

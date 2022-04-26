@@ -44,6 +44,7 @@ Warrior::Warrior(Properties* props): Character(props)
     m_AnimationHP = new SpriteAnim();
     m_AnimationHP->setProps("hp", 0, 5, 150);
 
+    m_sendNick = false;
 //    m_bullet = new Bullet("ammo", 0, 0, 81, 53);
 }
 
@@ -53,6 +54,11 @@ void Warrior::Draw()
     m_AnimationHP->Draw(cam.X, 0, 289, 45);
 
     cam = Camera::GetInstance()->GetPosition();
+
+    if (m_sendNick==true) {
+        m_namebar->Draw(m_Collider->Get().x-cam.X-23, m_Collider->Get().y-cam.Y-33);
+    }
+
 
 //    if (m_bullet->GetAddBullet())
 //    {
@@ -104,10 +110,16 @@ void Warrior::DrawDeath(std::string nameSound) {
 void Warrior::Clean()
 {
 	TextureManager::GetInstance()->Drop(m_pTextureID);
+    delete m_namebar;
 }
 
 void Warrior::Update(float dt)
 {
+    if (m_sendNick == false) {
+        m_sendNick = true;
+        m_namebar = new Namebar(Game::GetInstance()->GetNick());
+    }
+
 	m_RigidBody->UnSetForce();
 
 	if (input::GetInstance()->GetAxisRey(HORIZONTAL) == FORWARD && !m_Attacking)
@@ -232,7 +244,7 @@ void Warrior::Update(float dt)
     }
 
 	// Death collision map
-    if (CollisionHandler::GetInstance()->MapCollisionDamage(m_Collider->Get()) ) {
+    if (CollisionHandler::GetInstance()->MapCollisionDamage(m_Collider->Get()) && m_Health <= 200)  {
         m_pTransform->X = m_LastSafePos.X;
         isFailing = 1;
 
@@ -309,7 +321,7 @@ void Warrior::Update(float dt)
 		m_pTransform->X = m_LastSafePos.X;
 	}
 
-    if (CollisionHandler::GetInstance()->MapCollisionDamage(m_Collider->Get()))
+    if (CollisionHandler::GetInstance()->MapCollisionDamage(m_Collider->Get()) && m_Health<=200)
     {
         m_pTransform->X = m_LastSafePos.X;
         m_Health = -1;
@@ -400,42 +412,42 @@ void Warrior::AnimationState()
 void Warrior::AnimationHPBAR()
 {
 
-    if (m_Health==200)
+    if (m_Health>=180)
     {
         m_AnimationHP->setProps("hp", 0, 5, 150);
     }
 
-    else if (m_Health==175)
+    else if (m_Health>=175 && m_Health <180)
     {
         m_AnimationHP->setProps("hp", 1, 5, 150);
     }
 
-    else if (m_Health==150)
+    else if (m_Health>=150 && m_Health < 175)
     {
         m_AnimationHP->setProps("hp", 2, 5, 150);
     }
 
-    else if (m_Health==125)
+    else if (m_Health>=125 && m_Health < 150)
     {
         m_AnimationHP->setProps("hp", 3, 5, 150);
     }
 
-    else if (m_Health==100)
+    else if (m_Health >= 100 && m_Health < 125)
     {
         m_AnimationHP->setProps("hp", 4, 5, 150);
     }
 
-    else if (m_Health==75)
+    else if (m_Health >= 75 && m_Health < 100)
     {
         m_AnimationHP->setProps("hp", 5, 5, 150);
     }
 
-    else if (m_Health==50)
+    else if (m_Health >= 50 && m_Health < 75)
     {
         m_AnimationHP->setProps("hp", 6, 5, 150);
     }
 
-    else if (m_Health==25)
+    else if (m_Health >= 25 && m_Health < 50)
     {
         m_AnimationHP->setProps("hp", 7, 5, 150);
     }

@@ -7,6 +7,7 @@
 #include "SpriteAnim.h"
 #include "Enemy.h"
 #include "Bullet.h"
+#include "nameBar.h"
 
 
 //#define JUMP_TIME 10.0f;
@@ -33,8 +34,6 @@ public:
 
 	void clearInputCheats(bool*, int);
 
-    Vector2D GetPosPlayer() {return m_LastSafePos;}
-
     virtual float& GetHealth() {return m_Health;}
 
 
@@ -52,6 +51,8 @@ private:
 
     bool m_Jumping, m_Grounded, isFailing, m_Attacking;
 	bool m_Running, m_JumpDown;
+
+    bool m_sendNick;
 	
 	enterCheats hackSpeed, hackJump;
 
@@ -59,7 +60,6 @@ private:
 	float m_JumpTime, m_JumpForce, m_AttackTime, thisRunning;
 
     float m_Health, m_Damage;
-    Properties* hpBar;
 
 	Collider* m_Collider;
 
@@ -70,5 +70,8 @@ private:
 
 	Vector2D m_LastSafePos;
     Vector2D cam;
+
+    Namebar* m_namebar;
+
 };
 

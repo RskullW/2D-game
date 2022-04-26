@@ -6,6 +6,7 @@
 #include "TextureManager.h"
 #include "Game.h"
 #include "soundGame.h"
+#include "Nickname.h"
 
 class startWindow {
 public:
@@ -28,6 +29,26 @@ public:
             SDL_RenderCopy(Game::GetInstance()->GetRenderer(), m_pTextureID, &src, &dest);
             SDL_RenderPresent(Game::GetInstance()->GetRenderer());
         }
+
+        SDL_Texture* m_textureBackground = TextureManager::GetInstance()->getTexture("entername");
+        SDL_Rect m_srcBackground;
+        m_srcBackground.x = m_srcBackground.y = 0;
+        m_srcBackground.w = SCREEN_WIDTH;
+        m_srcBackground.h = SCREEN_HEIGHT;
+
+        Nickname* enterNick = new Nickname("TimerText");
+
+        while (enterNick->running()) {
+            enterNick->Update();
+            SDL_RenderClear(Game::GetInstance()->GetRenderer());
+            SDL_RenderCopy(Game::GetInstance()->GetRenderer(), m_textureBackground, &m_srcBackground, &m_srcBackground);
+            enterNick->Render();
+            SDL_RenderPresent(Game::GetInstance()->GetRenderer());
+
+        }
+
+        delete enterNick;
+
     }
     ~startWindow() {SDL_Log("start menu closed");}
 

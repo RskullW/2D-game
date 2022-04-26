@@ -26,10 +26,11 @@ ThirdBoss::ThirdBoss(Properties* props) : Character(props)
     m_Animation = new SpriteAnim();
     m_Animation->setProps(m_pTextureID, 0, 4, 120);
 
-    m_Health = 400;
+    m_Health = 800;
     m_Damage = 25;
 
-    m_Bullet = new Bullet("ammo", 0, 0, 81, 53);
+//    m_Bullet = new Bullet("ammo", 0, 0, 81, 53);
+    m_Bullet = new Bullet("ammo", 0, 0, 50, 33);
 }
 
 void ThirdBoss::Draw()
@@ -55,7 +56,7 @@ void ThirdBoss::Draw()
         hpBar.y += 5;
         hpBar.w -= 10;
         hpBar.h -= 10;
-        hpBar.w = (double) m_Health / 400 * hpBar.w;
+        hpBar.w = (double) m_Health / 800 * hpBar.w;
         SDL_SetRenderDrawColor(Game::GetInstance()->GetRenderer(), 0, 255, 0, 255);
         SDL_RenderFillRect(Game::GetInstance()->GetRenderer(), &hpBar);
 
@@ -133,7 +134,7 @@ void ThirdBoss::Update(float dt)
         if (m_Attacking == 0)
         {
             soundGame::GetInstance()->playEffect("attackUnk", 3);
-            m_Bullet->Add(m_pTransform->X, m_pTransform->Y-24, Game::GetInstance()->getPlayer()->GetOrigin()->X, Game::GetInstance()->getPlayer()->GetOrigin()->Y-24);
+            m_Bullet->Add(m_pTransform->X, m_pTransform->Y, Game::GetInstance()->getPlayer()->GetOrigin()->X, Game::GetInstance()->getPlayer()->GetOrigin()->Y+5);
         }
 
         m_RigidBody->UnSetForce();
@@ -205,7 +206,7 @@ void ThirdBoss::AnimationState() {
     }
 
     if (m_Attacking) {
-        m_Animation->setProps(m_pTextureID, 2, 7, 120);
+        m_Animation->setProps(m_pTextureID, 2, 7, 280);
     }
 
 
