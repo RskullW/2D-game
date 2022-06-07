@@ -1,5 +1,5 @@
 # Review
-https://youtu.be/GqrKbPWAhrg
+https://youtu.be/GUNXKDtN4us
 # Version 0.9.9
 - Добавлен ввод имени персонажа
 - Имя персонажа отображается над его головой
